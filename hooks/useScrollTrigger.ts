@@ -1,7 +1,7 @@
 'use client';
 
 import { useEffect, useRef } from 'react';
-import { gsap, ScrollTrigger } from '@/lib/gsap-config';
+import { ScrollTrigger } from '@/lib/gsap-config';
 
 interface UseScrollTriggerOptions {
   trigger?: HTMLElement | string;
