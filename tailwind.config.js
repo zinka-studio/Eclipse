@@ -17,9 +17,6 @@ const config = {
       fontFamily: {
         sans: ['system-ui', 'sans-serif'],
       },
-      spacing: {
-        // Add semantic spacing if needed
-      },
     },
   },
   plugins: [],
