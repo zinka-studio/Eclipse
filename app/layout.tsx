@@ -1,25 +1,39 @@
 import type { Metadata } from 'next';
+import { Cormorant_Garant, DM_Sans, Space_Mono } from 'next/font/google';
 import './globals.css';
 
+const cormorant = Cormorant_Garant({
+  subsets: ['latin'],
+  weight: ['300', '400', '500'],
+  style: ['normal', 'italic'],
+  variable: '--serif',
+  display: 'swap',
+});
+
+const dmSans = DM_Sans({
+  subsets: ['latin'],
+  weight: ['300', '400', '500'],
+  variable: '--sans',
+  display: 'swap',
+});
+
+const spaceMono = Space_Mono({
+  subsets: ['latin'],
+  weight: ['400', '700'],
+  variable: '--mono',
+  display: 'swap',
+});
+
 export const metadata: Metadata = {
-  title: 'Eclipse | Exclusive Tel Aviv Cocktail Bar',
-  description: 'Where the city fades. An exclusive encounter between light and shadow.',
+  title: 'Eclipse | Fine Cocktail Bar · Tel Aviv',
+  description: 'An exclusive encounter between light and shadow. Fine cocktail bar at 42 HaNevi\'im St., Tel Aviv.',
   metadataBase: new URL('https://eclipse-bar.vercel.app'),
-  icons: {
-    icon: '/favicon.ico',
-  },
 };
 
-export default function RootLayout({
-  children,
-}: {
-  children: React.ReactNode;
-}) {
+export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en">
-      <body className="bg-black text-white">
-        {children}
-      </body>
+    <html lang="en" className={`${cormorant.variable} ${dmSans.variable} ${spaceMono.variable}`}>
+      <body>{children}</body>
     </html>
   );
 }
