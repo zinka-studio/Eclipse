@@ -13,18 +13,25 @@ export function scrubVideo(
   videoElement: HTMLVideoElement,
   options: gsap.plugins.ScrollTriggerStaticVars = {}
 ) {
-  if (!videoElement || !videoElement.duration) return;
+  const init = () => {
+    if (!videoElement.duration) return;
+    gsap.to(videoElement, {
+      currentTime: videoElement.duration,
+      scrollTrigger: {
+        trigger: (options.trigger as Element) || videoElement,
+        start: (options.start as string) || 'top top',
+        end: (options.end as string) || 'bottom bottom',
+        scrub: 1,
+        markers: false,
+      },
+    });
+  };
 
-  gsap.to(videoElement, {
-    currentTime: videoElement.duration,
-    scrollTrigger: {
-      trigger: options.trigger || videoElement,
-      start: options.start || 'top top',
-      end: options.end || 'bottom bottom',
-      scrub: 1,
-      markers: false,
-    },
-  });
+  if (videoElement.readyState >= 1) {
+    init();
+  } else {
+    videoElement.addEventListener('loadedmetadata', init, { once: true });
+  }
 }
 
 /**
@@ -38,10 +45,9 @@ export function revealOnScroll(
     direction?: 'up' | 'down' | 'left' | 'right';
     duration?: number;
     delay?: number;
-    stagger?: boolean;
   } = {}
 ) {
-  const { direction = 'up', duration = 0.6, delay = 0, stagger = false } = options;
+  const { direction = 'up', duration = 0.6, delay = 0 } = options;
 
   const offsetMap = {
     up: { y: 40 },

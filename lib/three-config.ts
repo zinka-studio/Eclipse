@@ -9,7 +9,6 @@ import * as THREE from 'three';
 export function createScene(container: HTMLElement, width: number, height: number) {
   // Scene
   const scene = new THREE.Scene();
-  scene.background = new THREE.Color(0x000000);
 
   // Camera
   const camera = new THREE.PerspectiveCamera(75, width / height, 0.1, 1000);
@@ -86,4 +85,3 @@ export function animateRotation(object: THREE.Object3D, speed: number = 0.01) {
   object.rotation.z += speed * 0.5;
 }
 
-export default { createScene, handleResize, createGlassMaterial, createMetallicMaterial, animateRotation };
