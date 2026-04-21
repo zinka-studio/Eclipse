@@ -1,8 +1,8 @@
 import type { Metadata } from 'next';
-import { Cormorant_Garant, DM_Sans, Space_Mono } from 'next/font/google';
+import { Cormorant_Garamond, DM_Sans, Space_Mono } from 'next/font/google';
 import './globals.css';
 
-const cormorant = Cormorant_Garant({
+const cormorant = Cormorant_Garamond({
   subsets: ['latin'],
   weight: ['300', '400', '500'],
   style: ['normal', 'italic'],
