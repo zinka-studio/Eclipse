@@ -8,6 +8,7 @@ interface HeroProps {
 export default function Hero({ onReserve }: HeroProps) {
   const [open, setOpen] = useState(false);
   const [scrollHint, setScrollHint] = useState(false);
+  const [scrolled, setScrolled] = useState(false);
 
   useEffect(() => {
     const t1 = setTimeout(() => setOpen(true), 300);
@@ -19,6 +20,7 @@ export default function Hero({ onReserve }: HeroProps) {
     const onScroll = () => {
       const hp = document.getElementById('hero-parallax');
       if (hp) hp.style.transform = `translateY(${window.scrollY * 0.3}px)`;
+      setScrolled(window.scrollY > 10);
     };
     window.addEventListener('scroll', onScroll, { passive: true });
     return () => window.removeEventListener('scroll', onScroll);
@@ -29,14 +31,14 @@ export default function Hero({ onReserve }: HeroProps) {
       <div className="hero-bg" />
       <div className="hero-leak leak-1" />
       <div className="hero-leak leak-2" />
-      <div className="hero-vignette" />
+      <div className={`hero-vignette${scrolled ? ' scrolled' : ''}`} />
       <div className="hero-eclipse">
         <div className="eclipse-ring" />
         <div className="eclipse-ring" />
         <div className="eclipse-ring" />
       </div>
-      <div className={`lb lb-t${open ? ' open' : ''}`} />
-      <div className={`lb lb-b${open ? ' open' : ''}`} />
+      <div className={`lb lb-t${open ? ' open' : ''}${scrolled ? ' scrolled' : ''}`} />
+      <div className={`lb lb-b${open ? ' open' : ''}${scrolled ? ' scrolled' : ''}`} />
       <div className="hero-parallax" id="hero-parallax">
         <div className={`hero-inner${open ? ' in' : ''}`}>
           <div className="hero-pre">Tel Aviv · Est. 2024</div>
