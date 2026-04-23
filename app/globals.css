@@ -26,7 +26,7 @@ html { scroll-behavior: smooth; overflow-y: scroll; }
 body {
   background: var(--bg);
   color: var(--text);
-  font-family: var(--sans, 'DM Sans', system-ui, sans-serif);
+  font-family: var(--sans, 'Supreme', sans-serif);
   font-weight: 300;
   overflow-x: hidden;
   -webkit-font-smoothing: antialiased;
@@ -88,7 +88,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 
 /* ── LABEL ── */
 .label {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 10px;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 10px;
   letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-mid);
 }
 
@@ -96,7 +96,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 .btn {
   display: inline-flex; align-items: center; justify-content: center;
   padding: 16px 38px; cursor: none;
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 10px;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 10px;
   letter-spacing: 0.22em; text-transform: uppercase;
   text-decoration: none; border: none;
   position: relative; overflow: hidden;
@@ -139,7 +139,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   border-bottom-color: var(--rule);
 }
 .nav-logo {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: 22px; letter-spacing: 0.08em; color: #fff; text-decoration: none;
 }
 .burger {
@@ -167,7 +167,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 }
 #overlay-menu.open { opacity: 1; pointer-events: all; }
 .menu-link {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: clamp(38px, 5.5vw, 72px); letter-spacing: 0.02em;
   color: rgba(255,255,255,0.18); text-decoration: none;
   line-height: 1.32; transition: color 0.25s, letter-spacing 0.4s var(--ease);
@@ -180,7 +180,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   border-top: 1px solid rgba(255,255,255,0.06); padding-top: 24px;
 }
 .menu-bottom-link {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px;
   letter-spacing: 0.2em; text-transform: uppercase;
   color: rgba(255,255,255,0.2); text-decoration: none; transition: color 0.2s; cursor: none;
 }
@@ -247,12 +247,12 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 }
 .hero-inner.in { opacity: 1; }
 .hero-pre {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px;
   letter-spacing: 0.32em; text-transform: uppercase;
   color: rgba(255,255,255,0.24); margin-bottom: 32px;
 }
 .hero-title {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: clamp(100px, 14vw, 192px);
   letter-spacing: 0.04em; line-height: 0.88;
   color: #fff;
@@ -264,7 +264,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   margin: 36px auto;
 }
 .hero-tagline {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--sans) !important; font-style: italic; font-weight: 300;
   font-size: clamp(18px, 1.6vw, 24px);
   color: rgba(255,255,255,0.4); letter-spacing: 0.04em;
   margin-bottom: 48px; max-width: 480px; line-height: 1.5;
@@ -275,7 +275,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   padding: 0 64px 40px;
   display: flex; align-items: flex-end; justify-content: space-between;
 }
-.hero-addr { font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.18); }
+.hero-addr { font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.2em; color: rgba(255,255,255,0.18); }
 .hero-scroll-hint {
   display: flex; flex-direction: column; align-items: center; gap: 12px;
   opacity: 0; transition: opacity 1s 2.4s;
@@ -334,7 +334,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 }
 .concept-img-label {
   position: absolute; bottom: 40px; left: 40px; z-index: 2;
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: rgba(255,255,255,0.15);
 }
@@ -352,11 +352,11 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   display: flex; align-items: center; gap: 16px; margin-bottom: 56px;
 }
 .sec-tag-num {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.18em; color: var(--text-dim);
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.18em; color: var(--text-dim);
 }
 .sec-tag-line { flex: 0 0 28px; height: 1px; background: var(--rule); }
 .sec-headline {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: clamp(46px, 4.8vw, 74px);
   line-height: 1.06; letter-spacing: 0.01em; color: #fff;
 }
@@ -369,7 +369,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 }
 .body-copy.dark { color: #777; }
 .body-copy em {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic;
+  font-family: var(--sans, 'Supreme', sans-serif); font-style: italic;
   font-size: 17.5px; color: rgba(255,255,255,0.65);
 }
 .body-copy.dark em { color: rgba(0,0,0,0.55); }
@@ -388,13 +388,13 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   display: flex; align-items: flex-end; justify-content: space-between;
   margin-bottom: 64px;
 }
-.gallery-intro { font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 18px; }
+.gallery-intro { font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.22em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 18px; }
 .gallery-title {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: clamp(44px, 4.2vw, 64px);
   line-height: 1.08; color: #fff;
 }
-.gallery-sub { font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-dim); margin-top: 10px; }
+.gallery-sub { font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; text-transform: uppercase; letter-spacing: 0.14em; color: var(--text-dim); margin-top: 10px; }
 .gallery-arrows { display: flex; gap: 4px; flex-shrink: 0; }
 .arrow-btn {
   width: 48px; height: 48px;
@@ -441,7 +441,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   background: rgba(255,255,255,0.04); border: 1px solid rgba(255,255,255,0.1);
 }
 .fc-img-label {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 8px;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 8px;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: rgba(255,255,255,0.12); text-align: center;
 }
@@ -453,19 +453,19 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 }
 .fc:hover .fc-overlay { opacity: 1; }
 .fc-overlay-btn {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase;
   color: #fff; border: 1px solid rgba(255,255,255,0.35); padding: 12px 24px;
   background: transparent; cursor: none;
 }
 .fc-body { padding: 28px 28px 34px; }
 .fc-name {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: 28px; color: #fff; margin-bottom: 10px; line-height: 1.12;
 }
 .fc-desc { font-size: 13px; color: var(--text-mid); line-height: 1.78; margin-bottom: 22px; }
 .fc-rule { width: 24px; height: 1px; background: var(--rule); margin-bottom: 14px; }
-.fc-pairing-lbl { font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
-.fc-pairing-val { font-size: 13.5px; color: rgba(255,255,255,0.28); line-height: 1.55; font-style: italic; font-family: var(--serif, 'Cormorant Garant', Georgia, serif); }
+.fc-pairing-lbl { font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase; color: var(--text-dim); margin-bottom: 5px; }
+.fc-pairing-val { font-size: 13.5px; color: rgba(255,255,255,0.28); line-height: 1.55; font-style: italic; font-family: var(--sans, 'Supreme', sans-serif); }
 .fc.dim { opacity: 0.22; pointer-events: none; }
 .gallery-progress {
   display: flex; gap: 5px; padding: 24px 80px 0; align-items: center;
@@ -550,7 +550,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 .lock-circle svg { width: 22px; height: 22px; stroke: rgba(255,255,255,0.4); fill: none; stroke-width: 1.5; stroke-linecap: round; }
 .elixir-kicker { margin-bottom: 22px; z-index: 1; }
 .elixir-title {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: clamp(52px, 7vw, 96px);
   line-height: 1.04; color: #fff; margin-bottom: 32px; z-index: 1;
   max-width: 720px;
@@ -625,14 +625,14 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 .g-foot { width: 72px; height: 1.5px; background: linear-gradient(to right, transparent, rgba(255,255,255,0.18), transparent); }
 .glass-hint {
   margin-top: 28px;
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px;
   letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--text-dim); border: 1px dashed rgba(255,255,255,0.08); padding: 8px 18px;
 }
 .layer-key { display: flex; flex-direction: column; gap: 16px; margin-top: 40px; }
 .lk-row { display: flex; align-items: center; gap: 14px; }
 .lk-swatch { width: 32px; height: 8px; border: 1px solid rgba(255,255,255,0.08); flex-shrink: 0; }
-.lk-label { font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
+.lk-label { font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.1em; text-transform: uppercase; color: var(--text-dim); }
 .lk-name { font-size: 13px; color: var(--text-mid); }
 
 /* ═══════════════════════════════════
@@ -670,12 +670,12 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 .fcard-img-cross::before { width: 1px; height: 40px; top: -20px; left: 0; }
 .fcard-img-cross::after  { width: 40px; height: 1px; top: 0; left: -20px; }
 .fcard-name {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 400;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 400;
   font-size: 22px; color: #111; line-height: 1.2;
 }
 .fcard-desc { font-size: 13px; color: #999; line-height: 1.72; }
 .fcard-tag {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.14em; text-transform: uppercase;
   color: rgba(0,0,0,0.2); margin-top: 4px;
 }
 
@@ -697,30 +697,30 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.15));
 }
 .ft-pre {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.22em;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.22em;
   color: var(--text-dim); margin-bottom: 32px;
 }
 .ft-wordmark {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: clamp(72px, 10vw, 140px); letter-spacing: 0.06em;
   line-height: 0.9; color: #fff; margin-bottom: 40px;
   text-shadow: 0 0 100px rgba(150,130,200,0.08);
 }
 .ft-info { display: flex; gap: 48px; align-items: center; margin-bottom: 48px; }
 .ft-info-item { display: flex; flex-direction: column; gap: 6px; align-items: center; }
-.ft-info-label { font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
+.ft-info-label { font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: var(--text-dim); }
 .ft-info-val { font-size: 14px; color: rgba(255,255,255,0.45); }
 .ft-sep-v { width: 1px; height: 32px; background: var(--rule); }
 .ft-cta { margin-bottom: 48px; }
 .ft-socials { display: flex; gap: 10px; align-items: center; margin-bottom: 72px; }
 .ft-social {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.18em; text-transform: uppercase;
   color: var(--text-dim); text-decoration: none;
   transition: color 0.2s; cursor: none;
 }
 .ft-social:hover { color: rgba(255,255,255,0.6); }
 .ft-sep { width: 1px; height: 10px; background: var(--rule); }
-.ft-copy { font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; color: rgba(255,255,255,0.08); letter-spacing: 0.12em; }
+.ft-copy { font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; color: rgba(255,255,255,0.08); letter-spacing: 0.12em; }
 
 /* ═══════════════════════════════════
    DRAWER
@@ -745,28 +745,28 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   padding-bottom: 24px; border-bottom: 1px solid #eee; margin-bottom: 36px;
 }
 .dr-title {
-  font-family: var(--serif, 'Cormorant Garant', Georgia, serif); font-style: italic; font-weight: 300;
+  font-family: var(--serif, 'Boska', serif); font-style: italic; font-weight: 300;
   font-size: 44px; color: #111; line-height: 1;
 }
 .dr-close {
-  font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
+  font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.12em; text-transform: uppercase;
   color: #ccc; background: none; border: none; cursor: none; transition: color 0.2s;
 }
 .dr-close:hover { color: #333; }
 .dr-form { display: grid; grid-template-columns: 1fr 1fr; gap: 28px; max-width: 680px; }
 .dr-field { display: flex; flex-direction: column; gap: 8px; }
 .dr-field.full { grid-column: 1/-1; }
-.dr-label { font-family: var(--mono, 'Space Mono', monospace); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #c8c8c8; }
+.dr-label { font-family: var(--sans, 'Supreme', sans-serif); font-size: 9px; letter-spacing: 0.2em; text-transform: uppercase; color: #c8c8c8; }
 .dr-input {
   border: none; border-bottom: 1px solid #e8e8e8;
-  padding: 12px 0; font-size: 15px; font-family: var(--sans, 'DM Sans', system-ui, sans-serif); font-weight: 300;
+  padding: 12px 0; font-size: 15px; font-family: var(--sans, 'Supreme', sans-serif); font-weight: 300;
   color: #111; background: transparent; outline: none; transition: border-color 0.25s;
 }
 .dr-input:focus { border-color: #111; }
 .dr-submit-wrap { grid-column: 1/-1; margin-top: 8px; }
 .dr-submit {
   background: #111; color: #fff; border: none;
-  padding: 18px 56px; font-family: var(--mono, 'Space Mono', monospace); font-size: 10px;
+  padding: 18px 56px; font-family: var(--sans, 'Supreme', sans-serif); font-size: 10px;
   letter-spacing: 0.22em; text-transform: uppercase; cursor: none;
   transition: background 0.25s;
   position: relative; overflow: hidden;
