@@ -1,6 +1,7 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
 import './globals.css';
+import LenisProvider from '@/components/ui/LenisProvider';
 
 const boska = localFont({
   src: [
@@ -45,7 +46,7 @@ export const metadata: Metadata = {
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
     <html lang="en" className={`${boska.variable} ${supreme.variable}`}>
-      <body>{children}</body>
+      <body><LenisProvider>{children}</LenisProvider></body>
     </html>
   );
 }
