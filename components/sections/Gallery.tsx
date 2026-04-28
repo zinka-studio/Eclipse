@@ -43,7 +43,8 @@ export default function Gallery() {
       e.preventDefault();
       fs.scrollLeft = sl - (e.pageX - fs.offsetLeft - ox);
     };
-    const onScroll = () => setActiveIdx(Math.round(fs.scrollLeft / 362));
+    const cardWidth = () => (fs.querySelector('.fc') as HTMLElement)?.offsetWidth ?? 360;
+    const onScroll = () => setActiveIdx(Math.round(fs.scrollLeft / (cardWidth() + 2)));
     fs.addEventListener('mousedown', onDown);
     document.addEventListener('mouseup', onUp);
     document.addEventListener('mousemove', onMove);
@@ -56,7 +57,12 @@ export default function Gallery() {
     };
   }, []);
 
-  const scroll = (dir: number) => fsRef.current?.scrollBy({ left: dir * 370, behavior: 'smooth' });
+  const scroll = (dir: number) => {
+    const fs = fsRef.current;
+    if (!fs) return;
+    const cardWidth = (fs.querySelector('.fc') as HTMLElement)?.offsetWidth ?? 360;
+    fs.scrollBy({ left: dir * (cardWidth + 2), behavior: 'smooth' });
+  };
 
   return (
     <section id="gallery" ref={sectionRef}>

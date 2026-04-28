@@ -1,7 +1,15 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
+import { Fraunces } from 'next/font/google';
 import './globals.css';
 import LenisProvider from '@/components/ui/LenisProvider';
+
+const fraunces = Fraunces({
+  subsets: ['latin'],
+  axes: ['SOFT', 'WONK', 'opsz'],
+  display: 'swap',
+  variable: '--display',
+});
 
 const boska = localFont({
   src: [
@@ -32,6 +40,11 @@ const supreme = localFont({
       weight: '300',
       style: 'italic',
     },
+    {
+      path: './fonts/Supreme-Medium.woff2',
+      weight: '600',
+      style: 'normal',
+    },
   ],
   variable: '--sans',
   display: 'swap',
@@ -45,7 +58,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${boska.variable} ${supreme.variable}`}>
+    <html lang="en" className={`${fraunces.variable} ${boska.variable} ${supreme.variable}`}>
       <body><LenisProvider>{children}</LenisProvider></body>
     </html>
   );

@@ -6,8 +6,8 @@ import { getLenis } from '@/lib/lenis';
 
 const SECTION_HEIGHT = 300;
 const FADE_OVER = 2.4;        // match useFrameSequence SCROLL_TRAVEL so animation covers full video
-const TEXT_ANIM_START = 0.05; // text starts fading at 5% progress
-const TEXT_ANIM_END   = 0.28; // text fully gone at 28% progress (before doors open)
+const TEXT_ANIM_START = 0.20; // text starts fading at 20% scroll progress
+const TEXT_ANIM_END   = 0.43; // text fully gone at 43% progress
 
 interface HeroProps { onReserve: () => void; }
 
@@ -77,14 +77,15 @@ export default function Hero({ onReserve }: HeroProps) {
         <div className={`lb lb-t${open ? ' open' : ''}`} />
         <div className={`lb lb-b${open ? ' open' : ''}`} />
         <div ref={textRef} className={`hero-inner${open ? ' in' : ''}`}>
-          <div className="hero-pre">Tel Aviv · Est. 2024</div>
-          <div className="hero-title">Enter The Night</div>
+          <div className="hero-title">
+            <span className="hero-title-upper">Enter the</span>
+            <span className="hero-title-lower">Night</span>
+          </div>
           <div className="hero-post-wrap">
             <div className="hero-tagline">
               An exclusive encounter between light and shadow.
             </div>
             <div className="hero-actions">
-              <a href="#concept" className="btn btn-ghost">Enter the Night</a>
               <button className="btn btn-ghost" onClick={onReserve}>Reserve a Table</button>
             </div>
           </div>
