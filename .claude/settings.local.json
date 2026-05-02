@@ -1,0 +1,27 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(node \"C:/Users/Administrator/.claude/plugins/cache/impeccable/impeccable/2.1.1/.claude/skills/impeccable/scripts/cleanup-deprecated.mjs\")",
+      "mcp__Claude_Preview__preview_start",
+      "Bash(taskkill /PID 35292 /F)",
+      "mcp__798d686e-e8d8-44d5-a7d2-3a346757c2cf__get_design_context",
+      "mcp__798d686e-e8d8-44d5-a7d2-3a346757c2cf__get_screenshot",
+      "Bash(netstat -ano)",
+      "Bash(findstr :3000)",
+      "Bash(tasklist /FI \"PID eq 20872\" /FO LIST)",
+      "Bash(tasklist //FI \"PID eq 20872\")",
+      "Bash(taskkill //PID 20872 //F)",
+      "Bash(claude remote-control *)",
+      "mcp__798d686e-e8d8-44d5-a7d2-3a346757c2cf__get_metadata",
+      "mcp__798d686e-e8d8-44d5-a7d2-3a346757c2cf__use_figma",
+      "Bash(curl -s -o /tmp/hero.png \"https://www.figma.com/api/mcp/asset/ad98db13-8a0b-490f-b334-65528ec50baf\")",
+      "Bash(curl -s -o /tmp/gallery.png \"https://www.figma.com/api/mcp/asset/05bd150c-1d38-45c5-8bef-3ed3aa33e725\")",
+      "Bash(curl -s -o /tmp/food.png \"https://www.figma.com/api/mcp/asset/b32d7b4d-c494-45cf-a434-be1d09ca6792\")",
+      "Bash(pnpm dev *)",
+      "Bash(git add *)",
+      "Bash(git commit -m ' *)",
+      "Bash(git push *)",
+      "Bash(taskkill /PID 21012 /F)"
+    ]
+  }
+}

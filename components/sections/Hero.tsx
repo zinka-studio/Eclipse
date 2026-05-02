@@ -4,7 +4,7 @@ import { useFrameSequence } from '@/hooks/useFrameSequence';
 import { gsap } from '@/lib/gsap-config';
 import { getLenis } from '@/lib/lenis';
 
-const SECTION_HEIGHT = 300;
+const SECTION_HEIGHT = 260;
 const FADE_OVER = 2.4;        // match useFrameSequence SCROLL_TRAVEL so animation covers full video
 const TEXT_ANIM_START = 0.20; // text starts fading at 20% scroll progress
 const TEXT_ANIM_END   = 0.43; // text fully gone at 43% progress
