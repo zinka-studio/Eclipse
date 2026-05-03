@@ -6,8 +6,8 @@ import Nav from '@/components/ui/Nav';
 import BookingDrawer from '@/components/ui/BookingDrawer';
 import Hero from '@/components/sections/Hero';
 import Concept from '@/components/sections/Concept';
-import Gallery from '@/components/sections/Gallery';
 import Elixir from '@/components/sections/Elixir';
+import SecretCreation from '@/components/sections/SecretCreation';
 import Alchemy from '@/components/sections/Alchemy';
 import Food from '@/components/sections/Food';
 import EclipseFooter from '@/components/sections/EclipseFooter';
@@ -24,8 +24,8 @@ export default function Home() {
       <Nav onReserve={openDrawer} />
       <Hero onReserve={openDrawer} />
       <Concept />
-      <Gallery />
       <Elixir onReserve={openDrawer} />
+      <SecretCreation />
       <Alchemy />
       <Food />
       <EclipseFooter onReserve={openDrawer} />
