@@ -81,7 +81,7 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
 
     // Phase 3: play new video forward from start
     await new Promise<void>((resolve) => {
-      video.addEventListener('canplay', resolve as EventListener, { once: true });
+      video.addEventListener('canplay', () => resolve(), { once: true });
     });
     video.play().catch(() => {});
     transitingRef.current = false;
