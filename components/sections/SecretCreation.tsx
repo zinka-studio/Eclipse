@@ -1,10 +1,10 @@
 'use client';
 import { useRef } from 'react';
-import { motion, useInView } from 'motion/react';
+import { motion, useInView, Variants } from 'motion/react';
 
 const GLASS_IMAGE = 'https://www.figma.com/api/mcp/asset/44034922-06b8-4d66-af89-674b44fab662';
 
-const containerVariants = {
+const containerVariants: Variants = {
   hidden: { opacity: 0 },
   visible: {
     opacity: 1,
@@ -15,7 +15,7 @@ const containerVariants = {
   },
 };
 
-const itemVariants = {
+const itemVariants: Variants = {
   hidden: { opacity: 0, y: 30, filter: 'blur(10px)' },
   visible: {
     opacity: 1,
@@ -28,7 +28,7 @@ const itemVariants = {
   },
 };
 
-const statusVariants = {
+const statusVariants: Variants = {
   hidden: { opacity: 0, letterSpacing: '1em' },
   visible: {
     opacity: 1,
