@@ -1,14 +1,43 @@
 import type { Metadata } from 'next';
 import localFont from 'next/font/local';
-import { Fraunces } from 'next/font/google';
 import './globals.css';
 import LenisProvider from '@/components/ui/LenisProvider';
 
-const fraunces = Fraunces({
-  subsets: ['latin'],
-  axes: ['SOFT', 'WONK', 'opsz'],
-  display: 'swap',
+const mountella = localFont({
+  src: [
+    {
+      path: '../fonts/mountella/WOFF/Mountella-Light.woff2',
+      weight: '300',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/mountella/WOFF/Mountella-LightItalic.woff2',
+      weight: '300',
+      style: 'italic',
+    },
+    {
+      path: '../fonts/mountella/WOFF/Mountella-Regular.woff2',
+      weight: '400',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/mountella/WOFF/Mountella-Italic.woff2',
+      weight: '400',
+      style: 'italic',
+    },
+    {
+      path: '../fonts/mountella/WOFF/Mountella-Medium.woff2',
+      weight: '500',
+      style: 'normal',
+    },
+    {
+      path: '../fonts/mountella/WOFF/Mountella-Bold.woff2',
+      weight: '700',
+      style: 'normal',
+    },
+  ],
   variable: '--display',
+  display: 'swap',
 });
 
 const boska = localFont({
@@ -58,7 +87,7 @@ export const metadata: Metadata = {
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
   return (
-    <html lang="en" className={`${fraunces.variable} ${boska.variable} ${supreme.variable}`}>
+    <html lang="en" className={`${mountella.variable} ${boska.variable} ${supreme.variable}`}>
       <body><LenisProvider>{children}</LenisProvider></body>
     </html>
   );

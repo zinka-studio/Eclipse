@@ -140,9 +140,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 }
 .nav-logo {
   font-family: var(--display, 'Fraunces', serif); font-style: normal; font-weight: 400;
-  font-size: 22px; letter-spacing: 0.08em; color: #fff; text-decoration: none;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
-}
+  font-size: 22px; letter-spacing: 0.08em; color: #fff; text-decoration: none;}
 .burger {
   width: 32px; height: 16px; cursor: none;
   display: flex; flex-direction: column; justify-content: space-between;
@@ -277,14 +275,10 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 }
 .hero-title-upper {
   font-family: var(--display, 'Fraunces', serif); font-style: normal; font-weight: 400;
-  font-size: clamp(60px, 9.7vw, 140px); line-height: 0.686;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
-}
+  font-size: clamp(60px, 9.7vw, 140px); line-height: 0.686;}
 .hero-title-lower {
   font-family: var(--display, 'Fraunces', serif); font-style: normal; font-weight: 400;
-  font-size: clamp(60px, 9.7vw, 140px); line-height: 0.9;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
-}
+  font-size: clamp(60px, 9.7vw, 140px); line-height: 0.9;}
 .hero-post-wrap {
   display: flex; flex-direction: column; align-items: center;
 }
@@ -295,29 +289,25 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 }
 .hero-tagline {
   font-family: var(--sans) !important; font-style: normal; font-weight: 300;
-  font-size: 24px;
+  font-size: 18px;
   color: #f9f9f9; letter-spacing: 0.8821px;
-  margin-bottom: 50px; line-height: 1.45;
-  text-align: center; white-space: nowrap;
+  margin-bottom: 50px; line-height: 1.55;
+  text-align: center; max-width: 240px;
 }
 .hero-actions { display: flex; gap: 12px; }
 .hero-actions .btn, .hero-bottom { pointer-events: auto; }
 .hero-actions .btn-ghost {
-  border: none;
-  border-bottom: 2px solid #fff;
-  background: rgba(246,246,246,0.22);
+  border: 1px solid rgba(255,255,255,0.45);
+  background: rgba(246,246,246,0.12);
   backdrop-filter: blur(10.7px);
   -webkit-backdrop-filter: blur(10.7px);
-  overflow: visible !important;
   border-radius: 2px;
-  font-size: 20px;
+  font-size: 18px;
   font-weight: 600;
   letter-spacing: 0.83px;
   text-transform: none;
   padding: 14px 32px;
 }
-.hero-actions .btn-ghost:hover { color: #fff; border-bottom-color: #fff; background: rgba(255,255,255,0.28); }
-.hero-actions .btn-ghost::after { display: none; }
 .hero-bottom {
   position: absolute; bottom: 0; left: 0; right: 0; z-index: 6;
   padding: 0 64px 40px;
@@ -391,9 +381,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 .concept-headline {
   font-family: var(--display, 'Fraunces', serif); font-style: normal; font-weight: 400;
   font-size: clamp(48px, 6.25vw, 80px); line-height: 0.9;
-  color: #fff; text-align: center;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
-  max-width: 722px;
+  color: #fff; text-align: center;  max-width: 722px;
 }
 .concept-body {
   font-family: var(--sans, 'Supreme', sans-serif); font-weight: 300;
@@ -610,9 +598,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   font-size: clamp(52px, 5.5vw, 80px);
   line-height: 1.0;
   color: #fff;
-  text-align: right;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
-  margin-bottom: 6px;
+  text-align: right;  margin-bottom: 6px;
 }
 
 .elixir-nav-arrows {
@@ -675,9 +661,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   font-weight: 400;
   font-size: 30px;
   line-height: 56px;
-  color: #fff;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
-  white-space: nowrap;
+  color: #fff;  white-space: nowrap;
 }
 
 .elixir-drink-desc {
@@ -786,9 +770,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   font-weight: 400;
   font-size: clamp(52px, 5.6vw, 80px);
   line-height: 1.144;
-  color: #fff;
-  font-variation-settings: 'SOFT' 0, 'WONK' 1;
-  text-shadow: 0 2px 48px rgba(0,0,0,0.5);
+  color: #fff;  text-shadow: 0 2px 48px rgba(0,0,0,0.5);
 }
 
 .sc-body {
@@ -1091,7 +1073,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
   .hero-title-upper { font-size: clamp(44px, 19.2vw, 72px); line-height: 1; }
   .hero-title-lower { font-size: clamp(80px, 32.4vw, 121px); line-height: 0.88; }
   .hero-post-wrap { width: 100%; align-items: center; }
-  .hero-tagline   { font-size: 14px; white-space: normal; text-align: center; max-width: 82vw; margin-bottom: 20px; }
+  .hero-tagline   { font-size: 18px; white-space: normal; text-align: center; max-width: 240px; margin-bottom: 20px; }
   .hero-actions   { justify-content: center; }
   .hero-actions .btn { min-width: 200px; }
   .hero-bottom    { padding: 0 20px 28px; }
