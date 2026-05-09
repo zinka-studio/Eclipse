@@ -8,7 +8,6 @@ import Hero from '@/components/sections/Hero';
 import Concept from '@/components/sections/Concept';
 import Elixir from '@/components/sections/Elixir';
 import SecretCreation from '@/components/sections/SecretCreation';
-import Alchemy from '@/components/sections/Alchemy';
 import Food from '@/components/sections/Food';
 import EclipseFooter from '@/components/sections/EclipseFooter';
 
@@ -26,7 +25,6 @@ export default function Home() {
       <Concept />
       <Elixir onReserve={openDrawer} />
       <SecretCreation />
-      <Alchemy />
       <Food />
       <EclipseFooter onReserve={openDrawer} />
       <BookingDrawer open={drawerOpen} onClose={closeDrawer} />

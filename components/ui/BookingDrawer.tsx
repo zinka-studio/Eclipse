@@ -12,10 +12,10 @@ export default function BookingDrawer({ open, onClose }: BookingDrawerProps) {
       <div id="drawer" className={open ? 'open' : ''}>
         <div className="dr-handle-wrap" onClick={onClose}>
           <div className="dr-handle" />
+          <button className="dr-close" onClick={onClose}>✕&nbsp;&nbsp;Close</button>
         </div>
         <div className="dr-header">
           <div className="dr-title">Reserve Your Seat</div>
-          <button className="dr-close" onClick={onClose}>✕ Close</button>
         </div>
         <form className="dr-form" onSubmit={e => e.preventDefault()}>
           <div className="dr-field">

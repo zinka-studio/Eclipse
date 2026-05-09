@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import Image from 'next/image';
 
 interface FooterProps {
   onReserve: () => void;
@@ -18,6 +19,7 @@ export default function EclipseFooter({ onReserve }: FooterProps) {
 
   return (
     <footer id="footer" ref={footerRef}>
+      <div className="ft-arc" aria-hidden="true" />
       <div className="ft-pre reveal">Fine Cocktail Bar · Tel Aviv · Est. 2024</div>
       <div className="ft-wordmark reveal" data-d="1">Eclipse</div>
       <div className="ft-info reveal" data-d="2">
@@ -39,14 +41,18 @@ export default function EclipseFooter({ onReserve }: FooterProps) {
       <div className="ft-cta reveal" data-d="3">
         <button className="btn btn-ghost" onClick={onReserve} style={{ cursor: 'none' }}>Reserve Your Seat</button>
       </div>
-      <div className="ft-socials reveal" data-d="4">
-        <a href="#" className="ft-social">Instagram</a>
-        <div className="ft-sep" />
-        <a href="#" className="ft-social">Twitter</a>
-        <div className="ft-sep" />
-        <a href="#" className="ft-social">TikTok</a>
+
+      <div className="ft-bottom reveal" data-d="4">
+        <div className="ft-bottom-legal">
+          <a href="#" className="ft-legal-link" style={{ cursor: 'none' }}>Accessibility</a>
+          <a href="#" className="ft-legal-link" style={{ cursor: 'none' }}>Privacy Policy</a>
+        </div>
+        <div className="ft-copy">© 2026 Eclipse Bar Ltd. · Tel Aviv · All rights reserved</div>
+        <div className="ft-credit">
+          <span className="ft-credit-text">Designed &amp; crafted by</span>
+          <Image src="/zinka-logo.png" alt="Zinka" width={81} height={23} className="ft-credit-logo" />
+        </div>
       </div>
-      <div className="ft-copy reveal" data-d="5">© 2026 Eclipse Bar Ltd. · Tel Aviv · All rights reserved</div>
     </footer>
   );
 }

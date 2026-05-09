@@ -33,96 +33,236 @@ const DRINKS: Drink[] = [
   },
 ];
 
-// 0 s → video plays forward
-// 3 s → video starts reversing
-// 8 s → next drink shows + new video plays forward
-const PLAY_MS     = 5000; // play forward before reversing
-const BACKWARD_MS = 3000; // reverse duration (5 s + 3 s = 8 s total)
+const CAPTURE_FPS   = 15;   // frames extracted from each video
+const FORWARD_FPS   = 15;   // playback speed forward
+const BACKWARD_FPS  = 90;   // playback speed backward (6× = very snappy rewind)
+const CROSSFADE_MS  = 220;  // canvas opacity crossfade on drink switch
+const SWITCH_DELAY  = 80;   // ms of rewind to show before swapping canvas
+
+type FrameBank = ImageBitmap[];
+
+async function extractFrames(videoSrc: string): Promise<FrameBank> {
+  return new Promise((resolve) => {
+    const video = document.createElement('video');
+    video.muted = true;
+    video.playsInline = true;
+    video.crossOrigin = 'anonymous';
+
+    video.addEventListener('loadedmetadata', async () => {
+      const duration   = video.duration;
+      const total      = Math.ceil(duration * CAPTURE_FPS);
+      const canvas     = document.createElement('canvas');
+      canvas.width     = video.videoWidth  || 1920;
+      canvas.height    = video.videoHeight || 1080;
+      const ctx        = canvas.getContext('2d')!;
+      const frames: FrameBank = [];
+
+      for (let i = 0; i < total; i++) {
+        video.currentTime = i / CAPTURE_FPS;
+        await new Promise<void>(r =>
+          video.addEventListener('seeked', () => r(), { once: true })
+        );
+        ctx.drawImage(video, 0, 0, canvas.width, canvas.height);
+        try {
+          frames.push(await createImageBitmap(canvas));
+        } catch {
+          /* skip bad frame */
+        }
+        // yield to browser every 5 frames to stay responsive
+        if (i % 5 === 4) await new Promise(r => setTimeout(r, 0));
+      }
+
+      resolve(frames);
+    }, { once: true });
+
+    video.src = videoSrc;
+    video.load();
+  });
+}
 
 export default function Elixir({ onReserve }: { onReserve?: () => void }) {
-  const videoRef      = useRef<HTMLVideoElement>(null);
-  const transitingRef = useRef(false);
-  const currentIdxRef = useRef(0);
-  const rafRef        = useRef<number>(0);
-  const timerRef      = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const canvasARef = useRef<HTMLCanvasElement>(null);
+  const canvasBRef = useRef<HTMLCanvasElement>(null);
 
-  const [activeIndex, setActiveIndex] = useState(0);
+  // which canvas slot is "on top"
+  const [activeSlot, setActiveSlot] = useState<'A' | 'B'>('A');
 
-  // Core transition: reverse current video, THEN switch UI + play new video
-  const transition = useCallback(async (toIndex: number) => {
-    if (transitingRef.current || toIndex === currentIdxRef.current) return;
-    const video = videoRef.current;
-    if (!video) return;
+  const [activeIndex,   setActiveIndex]   = useState(0);
+  const [cycleDuration, setCycleDuration] = useState(8000);
+  const [progressKey,   setProgressKey]   = useState(0);
+  const [ready,         setReady]         = useState(false);
 
-    transitingRef.current = true;
+  // refs shared across RAF callbacks (no stale closure issues)
+  const framebanksRef   = useRef<(FrameBank | null)[]>([null, null, null]);
+  const activeIdxRef    = useRef(0);
+  const slotRef         = useRef<'A' | 'B'>('A');
+  const frameIdxRef     = useRef(0);          // current frame of active drink
+  const dirRef          = useRef<'fwd' | 'bwd'>('fwd');
+  const lastTsRef       = useRef(0);
+  const rafRef          = useRef(0);
+  const transitingRef   = useRef(false);
+  const autoTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null);
 
-    // Phase 1: pause and scrub backward to frame 0
-    video.pause();
-    cancelAnimationFrame(rafRef.current);
+  // ── helpers ────────────────────────────────────────────────────────────────
 
-    const startPos = video.currentTime;
-    const t0 = performance.now();
+  const getCanvas = (slot: 'A' | 'B') =>
+    slot === 'A' ? canvasARef.current : canvasBRef.current;
 
-    await new Promise<void>((resolve) => {
-      const tick = (now: number) => {
-        const p = Math.min((now - t0) / BACKWARD_MS, 1);
-        video.currentTime = Math.max(0, startPos * (1 - p));
-        if (p < 1) rafRef.current = requestAnimationFrame(tick);
-        else resolve();
-      };
-      rafRef.current = requestAnimationFrame(tick);
-    });
+  const drawFrame = (slot: 'A' | 'B', frameIdx: number, drinkIdx: number) => {
+    const bank   = framebanksRef.current[drinkIdx];
+    const canvas = getCanvas(slot);
+    if (!bank || !canvas) return;
+    const frame  = bank[Math.max(0, Math.min(frameIdx, bank.length - 1))];
+    if (!frame) return;
+    const ctx = canvas.getContext('2d');
+    ctx?.drawImage(frame, 0, 0, canvas.width, canvas.height);
+  };
 
-    // Phase 2: reverse done — now switch the UI and swap source
-    currentIdxRef.current = toIndex;
-    setActiveIndex(toIndex);
-    video.src = DRINKS[toIndex].video;
-    video.load();
+  // ── RAF loop ────────────────────────────────────────────────────────────────
 
-    // Phase 3: play new video forward from start
-    await new Promise<void>((resolve) => {
-      video.addEventListener('canplay', () => resolve(), { once: true });
-    });
-    video.play().catch(() => {});
-    transitingRef.current = false;
+  const tick = useCallback((ts: number) => {
+    if (lastTsRef.current === 0) lastTsRef.current = ts;
+    const elapsed  = ts - lastTsRef.current;
+    const fps      = dirRef.current === 'fwd' ? FORWARD_FPS : BACKWARD_FPS;
+    const interval = 1000 / fps;
+
+    if (elapsed >= interval) {
+      lastTsRef.current = ts - (elapsed % interval);
+
+      const bank   = framebanksRef.current[activeIdxRef.current];
+      const total  = bank?.length ?? 1;
+      const slot   = slotRef.current;
+
+      if (dirRef.current === 'fwd') {
+        const next = (frameIdxRef.current + 1) % total;
+        frameIdxRef.current = next;
+        drawFrame(slot, next, activeIdxRef.current);
+      } else {
+        // backward — caller switches direction; we stop at 0
+        const next = Math.max(0, frameIdxRef.current - 1);
+        frameIdxRef.current = next;
+        drawFrame(slot, next, activeIdxRef.current);
+        // signal completion via a tiny sentinel check (handled in transition)
+      }
+    }
+
+    rafRef.current = requestAnimationFrame(tick);
+  }, []); // stable — reads only refs
+
+  // ── transition between drinks ───────────────────────────────────────────────
+
+  const startCycle = useCallback((bankLength: number) => {
+    const dur = (bankLength / FORWARD_FPS) * 1000 * 2; // forward + implied backward
+    setCycleDuration(dur);
+    setProgressKey(k => k + 1);
   }, []);
 
-  // Schedule next auto-advance: wait PLAY_MS, then trigger transition
   const scheduleNext = useCallback(() => {
-    if (timerRef.current) clearTimeout(timerRef.current);
-    timerRef.current = setTimeout(() => {
-      const next = (currentIdxRef.current + 1) % DRINKS.length;
-      transition(next).then(() => scheduleNext());
-    }, PLAY_MS);
-  }, [transition]);
+    if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+    const bank = framebanksRef.current[activeIdxRef.current];
+    const fwdMs = ((bank?.length ?? 1) / FORWARD_FPS) * 1000;
+    autoTimerRef.current = setTimeout(() => {
+      const next = (activeIdxRef.current + 1) % DRINKS.length;
+      doTransition(next);
+    }, fwdMs);
+  }, []); // refs only
+
+  const doTransition = useCallback((toIdx: number) => {
+    if (transitingRef.current || toIdx === activeIdxRef.current) return;
+    transitingRef.current = true;
+    if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+
+    const currentSlot: 'A' | 'B' = slotRef.current;
+    const nextSlot:    'A' | 'B' = currentSlot === 'A' ? 'B' : 'A';
+
+    // Preload next drink's first frame into the inactive canvas
+    drawFrame(nextSlot, 0, toIdx);
+
+    // Switch RAF to backward on current canvas
+    dirRef.current = 'bwd';
+
+    // switch canvas almost immediately — rewind continues invisibly on fading-out canvas
+    const bwdMs = SWITCH_DELAY;
+
+    setTimeout(() => {
+      // Swap slot: next canvas fades in over current
+      slotRef.current     = nextSlot;
+      activeIdxRef.current = toIdx;
+      frameIdxRef.current  = 0;
+      dirRef.current       = 'fwd';
+      lastTsRef.current    = 0;
+
+      setActiveSlot(nextSlot);
+      setActiveIndex(toIdx);
+
+      const bank = framebanksRef.current[toIdx];
+      if (bank) startCycle(bank.length);
+
+      transitingRef.current = false;
+      scheduleNext();
+    }, bwdMs + CROSSFADE_MS);
+  }, [startCycle, scheduleNext]);
+
+  // ── mount: extract frames, start loop ──────────────────────────────────────
 
   useEffect(() => {
-    scheduleNext();
-    return () => { if (timerRef.current) clearTimeout(timerRef.current); };
-  }, [scheduleNext]);
+    let cancelled = false;
 
-  // Manual navigation — skips the PLAY_MS wait, resets the auto-advance timer
-  const navigate = (dir: number) => {
-    const next = (currentIdxRef.current + dir + DRINKS.length) % DRINKS.length;
-    transition(next).then(() => scheduleNext());
-  };
+    (async () => {
+      // Extract first drink synchronously so we can start immediately
+      const first = await extractFrames(DRINKS[0].video);
+      if (cancelled) return;
+      framebanksRef.current[0] = first;
+      frameIdxRef.current      = 0;
+      activeIdxRef.current     = 0;
+      setReady(true);
+      startCycle(first.length);
+      rafRef.current = requestAnimationFrame(tick);
+      scheduleNext();
+
+      // Extract remaining drinks in background
+      for (let i = 1; i < DRINKS.length; i++) {
+        const bank = await extractFrames(DRINKS[i].video);
+        if (!cancelled) framebanksRef.current[i] = bank;
+      }
+    })();
+
+    return () => {
+      cancelled = true;
+      cancelAnimationFrame(rafRef.current);
+      if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+      // release GPU memory
+      framebanksRef.current.forEach(bank => bank?.forEach(b => b.close()));
+    };
+  }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const goTo = (index: number) => {
-    transition(index).then(() => scheduleNext());
+    if (transitingRef.current) return;
+    if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+    doTransition(index);
   };
+
+  // ── render ──────────────────────────────────────────────────────────────────
 
   return (
     <section id="elixir">
       <div className="elixir-sticky">
 
         <div className="elixir-bg">
-          <video
-            ref={videoRef}
-            src={DRINKS[0].video}
-            autoPlay
-            muted
-            playsInline
-            className="elixir-video"
+          {/* Canvas A */}
+          <canvas
+            ref={canvasARef}
+            width={1920}
+            height={1080}
+            className={`elixir-video${activeSlot === 'A' ? ' elixir-video-active' : ''}`}
+            style={{ opacity: !ready ? 0 : undefined }}
+          />
+          {/* Canvas B */}
+          <canvas
+            ref={canvasBRef}
+            width={1920}
+            height={1080}
+            className={`elixir-video${activeSlot === 'B' ? ' elixir-video-active' : ''}`}
           />
           <div className="elixir-overlay" />
         </div>
@@ -132,20 +272,8 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
           <div className="elixir-left">
             <p className="elixir-kicker">Hand-crafted. Small-batch.</p>
             <h2 className="elixir-main-title">
-              What&apos;s your<br />elixir?
+              What&apos;s your<br /><span style={{ color: '#F4C485' }}>elixir?</span>
             </h2>
-            <div className="elixir-nav-arrows">
-              <button className="arrow-btn" onClick={() => navigate(-1)} aria-label="Previous">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M15 18l-6-6 6-6" />
-                </svg>
-              </button>
-              <button className="arrow-btn" onClick={() => navigate(1)} aria-label="Next">
-                <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="1.5" strokeLinecap="round" strokeLinejoin="round">
-                  <path d="M9 18l6-6-6-6" />
-                </svg>
-              </button>
-            </div>
           </div>
 
           <div className="elixir-center" />
@@ -160,6 +288,17 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
                   style={{ cursor: 'none' }}
                 >
                   <h3 className="elixir-drink-name">{drink.name}</h3>
+
+                  {index === activeIndex && (
+                    <div className="elixir-progress-track">
+                      <div
+                        key={progressKey}
+                        className="elixir-progress-fill"
+                        style={{ animationDuration: `${cycleDuration}ms` }}
+                      />
+                    </div>
+                  )}
+
                   <AnimatePresence mode="wait">
                     {index === activeIndex && (
                       <motion.p
