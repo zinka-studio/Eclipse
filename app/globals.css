@@ -176,8 +176,8 @@ body:has(.zinka-link:hover) #cursor-dot { transform: scale(0); opacity: 0; }
   display: block;
 }
 .menu-link:hover { color: #F4C485; letter-spacing: 0.05em; }
-.menu-link-cta { color: #F4C485; }
-.menu-link-cta:hover { color: #fff; }
+.menu-link-cta { color: #fff; }
+.menu-link-cta:hover { color: #F4C485; }
 .menu-bottom {
   position: absolute; bottom: 10%; left: 10vw; right: 10vw;
   display: flex; align-items: center; justify-content: space-between;
