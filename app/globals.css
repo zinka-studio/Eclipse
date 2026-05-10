@@ -171,11 +171,13 @@ body:has(.zinka-link:hover) #cursor-dot { transform: scale(0); opacity: 0; }
 .menu-link {
   font-family: var(--display); font-style: normal; font-weight: 700;
   font-size: clamp(2.64vw, 5.5vw, 5vw); letter-spacing: 0.02em;
-  color: rgba(255,255,255,0.18); text-decoration: none;
+  color: #fff; text-decoration: none;
   line-height: 1.32; transition: color 0.25s, letter-spacing 0.4s var(--ease);
   display: block;
 }
-.menu-link:hover { color: #fff; letter-spacing: 0.05em; }
+.menu-link:hover { color: #F4C485; letter-spacing: 0.05em; }
+.menu-link-cta { color: #F4C485; }
+.menu-link-cta:hover { color: #fff; }
 .menu-bottom {
   position: absolute; bottom: 10%; left: 10vw; right: 10vw;
   display: flex; align-items: center; justify-content: space-between;
