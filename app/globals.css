@@ -1101,7 +1101,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
   font-size: clamp(1.8vw, 2.6vw, 3vw);
   line-height: 1.1; color: #fff;
 }
-.mn-title-accent { color: #FB8500; }
+.mn-title-accent { color: #F4C485; }
 
 /* Tab navigation */
 .mn-tabs {
@@ -1119,12 +1119,12 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
   white-space: nowrap;
 }
 .mn-tab:hover {
-  color: #FB8500;
-  border-bottom-color: #FB8500;
+  color: #F4C485;
+  border-bottom-color: #F4C485;
 }
 .mn-tab.active {
   color: #fff;
-  border-bottom-color: #FB8500;
+  border-bottom-color: #F4C485;
 }
 
 /* Two-column items grid */
