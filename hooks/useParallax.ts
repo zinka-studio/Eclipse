@@ -13,9 +13,17 @@ export function useParallax<T extends HTMLElement>(
     const el = ref.current;
     if (!el || speed === 0) return;
 
+    // Respect reduced-motion preference
+    if (window.matchMedia('(prefers-reduced-motion: reduce)').matches) return;
+
     el.style.willChange = 'transform';
 
     const tick = () => {
+      // Skip on mobile — avoids jank and unnecessary GSAP overhead
+      if (window.innerWidth < 768) {
+        el.style.transform = '';
+        return;
+      }
       const rect = el.getBoundingClientRect();
       const vh = window.innerHeight;
       const offset = (rect.top + rect.height * 0.5 - vh * 0.5) * speed;

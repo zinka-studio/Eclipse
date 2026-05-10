@@ -143,20 +143,23 @@ export default function Menu() {
           </div>
         </div>
 
-        <nav className="mn-tabs reveal" data-d="1" aria-label="Menu categories">
-          {TABS.map((t, i) => (
-            <button
-              key={t.id}
-              className={`mn-tab${active === i ? ' active' : ''}`}
-              onClick={() => setActive(i)}
-              style={{ cursor: 'none' }}
-            >
-              {t.label}
-            </button>
-          ))}
-        </nav>
+        <div className="mn-tabs-scroll">
+          <nav className="mn-tabs reveal" data-d="1" aria-label="Menu categories">
+            {TABS.map((t, i) => (
+              <button
+                key={t.id}
+                className={`mn-tab${active === i ? ' active' : ''}`}
+                onClick={() => setActive(i)}
+                style={{ cursor: 'none' }}
+              >
+                {t.label}
+              </button>
+            ))}
+          </nav>
+        </div>
       </div>
 
+      {/* Desktop: two-column grid / Mobile: single column */}
       <div className="mn-grid">
         <ColItems col={tab.cols[0]} />
         <div className="mn-col-divider" />
