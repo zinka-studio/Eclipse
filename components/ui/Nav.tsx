@@ -31,10 +31,11 @@ export default function Nav({ onReserve }: NavProps) {
 
       <div id="overlay-menu" className={menuOpen ? 'open' : ''}>
         <a href="#concept" className="menu-link" onClick={close}>The Concept</a>
-        <a href="#gallery" className="menu-link" onClick={close}>Cocktails</a>
         <a href="#elixir" className="menu-link" onClick={close}>The Elixir</a>
+        <a href="#gallery" className="menu-link" onClick={close}>Liquid Gallery</a>
         <a href="#alchemy" className="menu-link" onClick={close}>Alchemy</a>
         <a href="#food" className="menu-link" onClick={close}>Food</a>
+        <a href="#menu" className="menu-link" onClick={close}>The Menu</a>
         <div className="menu-bottom">
           <a className="menu-bottom-link" href="#" onClick={() => { close(); onReserve(); }}>Reserve a Table →</a>
           <a className="menu-bottom-link" href="#" onClick={close}>42 HaNevi&apos;im St., Tel Aviv</a>
