@@ -53,7 +53,7 @@ export default function EclipseFooter({ onReserve }: FooterProps) {
         </div>
         <div className="ft-copy">© 2026 Eclipse Bar Ltd. · Tel Aviv · All rights reserved</div>
         <div className="ft-credit">
-          <a href="https://www.zinkadesigns.com/" target="_blank" rel="noopener noreferrer" style={{ cursor: 'none' }}>
+          <a href="https://www.zinkadesigns.com/" target="_blank" rel="noopener noreferrer" className="zinka-link" style={{ cursor: 'none' }}>
             <img src="/media/LOGO.svg" alt="Designed & crafted by Zinka" width={164} height={26} className="ft-credit-logo" />
           </a>
         </div>

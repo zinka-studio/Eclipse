@@ -37,8 +37,14 @@ export default function CustomCursor() {
       el.addEventListener('mouseleave', () => document.body.classList.remove('btn-hover'));
     };
 
-    document.querySelectorAll('a, button, .burger, .arrow-btn, .fc-overlay-btn').forEach(addLink);
+    const addZinka = (el: Element) => {
+      el.addEventListener('mouseenter', () => { document.body.classList.remove('link-hover'); document.body.classList.add('zinka-hover'); });
+      el.addEventListener('mouseleave', () => document.body.classList.remove('zinka-hover'));
+    };
+
+    document.querySelectorAll('a:not(.zinka-link), button, .burger, .arrow-btn, .fc-overlay-btn').forEach(addLink);
     document.querySelectorAll('.btn, .dr-submit').forEach(addBtn);
+    document.querySelectorAll('.zinka-link').forEach(addZinka);
 
     return () => {
       document.removeEventListener('mousemove', onMove);

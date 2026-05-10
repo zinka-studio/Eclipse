@@ -64,6 +64,12 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 .link-hover #cursor-ring { width: 4.17vw; height: 4.17vw; margin: -2.08vw 0 0 -2.08vw; border-color: rgba(255,255,255,0.6); }
 .btn-hover  #cursor-ring { width: 0; height: 0; margin: 0; opacity: 0; }
 .btn-hover  #cursor-dot  { transform: scale(0); opacity: 0; }
+.zinka-hover #cursor-ring {
+  width: 5.56vw; height: 5.56vw; margin: -2.78vw 0 0 -2.78vw;
+  background: rgba(251,133,0,0.15);
+  border-color: #FB8500;
+}
+.zinka-hover #cursor-dot { transform: scale(0); opacity: 0; }
 
 /* ── SCROLL PROGRESS ── */
 #spb {
