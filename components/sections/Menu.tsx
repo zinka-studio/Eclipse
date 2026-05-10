@@ -137,11 +137,6 @@ export default function Menu() {
     <section id="menu" ref={sectionRef}>
       <div ref={headerRef} className="mn-header">
         <div className="mn-header-top reveal">
-          <div className="sec-tag">
-            <span className="sec-tag-num">06</span>
-            <span className="sec-tag-line" />
-            <span className="label">The Menu</span>
-          </div>
           <div className="mn-title">
             <span className="mn-title-accent">Every night.</span><br />
             A new composition.

@@ -1083,7 +1083,6 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
   background: var(--bg);
   padding: 5vw 10vw 6vw;
   position: relative; z-index: 6;
-  border-top: 0.07vw solid var(--rule);
 }
 
 .mn-header {
