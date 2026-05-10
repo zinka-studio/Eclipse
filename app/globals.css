@@ -4,9 +4,9 @@
 
 /* ── DESIGN TOKENS ── */
 :root {
-  --bg:       #08080a;
-  --surface:  #0d0d10;
-  --surface2: #131318;
+  --bg:       #000;
+  --surface:  #000;
+  --surface2: #000;
   --paper:    #ece9e0;
   --paper2:   #e2dfd5;
   --gold:     rgba(244,196,133,0.55);
@@ -909,7 +909,7 @@ body:has(.zinka-link:hover) #cursor-dot { transform: scale(0); opacity: 0; }
 ═══════════════════════════════════ */
 /* All values: px ÷ 1920 = vw */
 #food {
-  background: #030303;
+  background: #000;
   /* padding: 142px 203px → 7.396vw 10.573vw */
   padding: 7.396vw 10.573vw;
   position: relative; z-index: 6;
@@ -1104,7 +1104,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
    MENU
 ═══════════════════════════════════ */
 #menu {
-  background: var(--bg);
+  background: transparent;
   padding: 5vw 10vw 6vw;
   position: relative; z-index: 6;
 }
@@ -1230,30 +1230,47 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
    FOOTER
 ═══════════════════════════════════ */
 #footer {
-  background: #040406;
-  padding: 9.72vw 5.56vw 5vw;
-  display: flex; flex-direction: column; align-items: center;
-  text-align: center;
-  border-top: 0.07vw solid rgba(255,255,255,0.04);
-  position: relative; overflow: hidden; z-index: 6;
+  position: relative;
 }
-#footer::before {
-  content: '';
-  position: absolute; top: 0; left: 50%; transform: translateX(-50%);
-  width: 0.07vw; height: 5.56vw;
-  background: linear-gradient(to bottom, transparent, rgba(255,255,255,0.15));
+.footer-sticky {
+  position: fixed;
+  inset: 0;
+  height: 100vh;
+  background: #000;
+  visibility: hidden;
+  z-index: 5;
 }
-.ft-arc {
+.footer-canvas {
   position: absolute;
-  left: 50%; transform: translateX(-50%);
-  top: 0.52vw;
-  width: 64.2%;
-  aspect-ratio: 2 / 1;
-  border: 0.07vw solid rgba(255,255,255,0.1);
-  border-bottom: none;
-  border-radius: 50% 50% 0 0 / 100% 100% 0 0;
+  inset: 0;
+  width: 100%;
+  height: 100%;
+  display: block;
+}
+.footer-black {
+  position: absolute;
+  inset: 0;
+  background: #000;
+  z-index: 1;
   pointer-events: none;
-  z-index: 0;
+}
+.footer-blur {
+  position: absolute;
+  inset: 0;
+  backdrop-filter: blur(18px) saturate(0.7);
+  background: rgba(0, 0, 0, 0.48);
+  z-index: 2;
+  pointer-events: none;
+  opacity: 0;
+}
+.footer-content {
+  position: absolute;
+  inset: 0;
+  z-index: 3;
+  display: flex; flex-direction: column; align-items: center; justify-content: center;
+  text-align: center;
+  padding: 9.72vw 5.56vw 5vw;
+  opacity: 0;
 }
 .ft-pre {
   font-family: var(--sans, 'Supreme', sans-serif); font-weight: 300; font-size: 0.63vw; letter-spacing: 0.22em;
@@ -1272,9 +1289,11 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
 .ft-sep-v { width: 0.07vw; height: 1.667vw; background: rgba(255,255,255,0.24); }
 .ft-cta { margin-bottom: 4.17vw; }
 .ft-bottom {
+  position: absolute; bottom: 0; left: 0; right: 0;
   width: 90vw; margin: 0 auto;
   display: flex; align-items: center; justify-content: space-between;
-  padding-top: 1.67vw; border-top: 0.07vw solid rgba(255,255,255,0.06);
+  padding: 1.67vw 0 2.08vw;
+  border-top: 0.07vw solid rgba(255,255,255,0.06);
 }
 .ft-bottom-legal { display: flex; gap: 0.69vw; align-items: center; }
 .ft-legal-link {
@@ -1370,7 +1389,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
   .gallery-progress { padding: 1.67vw 4.167vw 0; }
   #alchemy        { padding: 9.03vw 6.94vw; gap: 9.72vw; }
   #food           { padding: 7.396vw 10.573vw; }
-  #footer         { padding: 9.72vw 5.56vw 5vw; }
+  .footer-content { padding: 9.72vw 5.56vw 5vw; }
   #drawer         { padding: 0 6.67vw 5.56vw; }
 }
 
@@ -1394,7 +1413,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
   #food            { padding: 5.56vw 5vw; height: auto; min-height: 50vw; }
   .food-image-wrap { width: 40vw; height: 40vw; left: 50vw; top: 5vw; }
 
-  #footer         { padding: 7.64vw 3.33vw 4.44vw; }
+  .footer-content { padding: 7.64vw 3.33vw 4.44vw; }
   #drawer         { padding: 0 2.78vw 3.89vw; }
 }
 
@@ -1550,8 +1569,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
   }
 
   /* ── FOOTER ── */
-  #footer         { padding: 56px 24px 40px; }
-  #footer::before { width: 1px; height: 56px; }
+  .footer-content { padding: 56px 24px 40px; }
   .ft-pre         { font-size: 9px; margin-bottom: 16px; }
   .ft-wordmark    { font-size: 52px; margin-bottom: 24px; letter-spacing: 0.04em; }
   .ft-info        { flex-direction: column; gap: 16px; margin-bottom: 28px; }
