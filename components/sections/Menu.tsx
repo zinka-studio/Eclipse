@@ -120,10 +120,8 @@ export default function Menu() {
   const [active, setActive] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
   const headerRef  = useRef<HTMLDivElement>(null);
-  const gridRef    = useRef<HTMLDivElement>(null);
 
   useParallax(headerRef, 0.03);
-  useParallax(gridRef,   0.06);
 
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
@@ -144,7 +142,10 @@ export default function Menu() {
             <span className="sec-tag-line" />
             <span className="label">The Menu</span>
           </div>
-          <div className="mn-title">Every night.<br />A new composition.</div>
+          <div className="mn-title">
+            <span className="mn-title-accent">Every night.</span><br />
+            A new composition.
+          </div>
         </div>
 
         <nav className="mn-tabs reveal" data-d="1" aria-label="Menu categories">
@@ -161,7 +162,7 @@ export default function Menu() {
         </nav>
       </div>
 
-      <div ref={gridRef} className="mn-grid reveal" data-d="2">
+      <div className="mn-grid">
         <ColItems col={tab.cols[0]} />
         <div className="mn-col-divider" />
         <ColItems col={tab.cols[1]} />

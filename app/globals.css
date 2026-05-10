@@ -1081,7 +1081,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
 ═══════════════════════════════════ */
 #menu {
   background: var(--bg);
-  padding: 8.33vw 5.56vw 10vw;
+  padding: 5vw 5.56vw 6vw;
   position: relative; z-index: 6;
   border-top: 0.07vw solid var(--rule);
 }
@@ -1090,36 +1090,40 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
   display: flex;
   align-items: flex-end;
   justify-content: space-between;
-  margin-bottom: 5vw;
+  margin-bottom: 3vw;
   gap: 4vw;
 }
 
-.mn-header-top { display: flex; flex-direction: column; gap: 2.08vw; }
+.mn-header-top { display: flex; flex-direction: column; gap: 1.25vw; }
 
 .mn-title {
   font-family: var(--display); font-style: normal; font-weight: 700;
-  font-size: clamp(2.78vw, 4.2vw, 4.17vw);
-  line-height: 1.08; color: #fff;
+  font-size: clamp(1.8vw, 2.6vw, 3vw);
+  line-height: 1.1; color: #fff;
 }
+.mn-title-accent { color: #FB8500; }
 
 /* Tab navigation */
 .mn-tabs {
-  display: flex; align-items: flex-end; gap: 2.78vw;
+  display: flex; align-items: flex-end; gap: 2.22vw;
   flex-shrink: 0; padding-bottom: 0.14vw;
 }
 
 .mn-tab {
-  background: none; border: none; padding: 0 0 0.83vw;
+  background: none; border: none; padding: 0 0 0.55vw;
   font-family: var(--sans, 'Supreme', sans-serif);
-  font-size: 0.69vw; letter-spacing: 0.22em; text-transform: uppercase;
-  color: var(--text-dim);
+  font-size: 0.63vw; letter-spacing: 0.2em; text-transform: uppercase;
+  color: rgba(255,255,255,0.75);
   border-bottom: 0.07vw solid transparent;
-  transition: color 0.3s, border-color 0.3s;
+  transition: color 0.25s, border-color 0.25s;
   white-space: nowrap;
 }
-.mn-tab:hover { color: rgba(255,255,255,0.55); }
-.mn-tab.active {
+.mn-tab:hover {
   color: #FB8500;
+  border-bottom-color: #FB8500;
+}
+.mn-tab.active {
+  color: #fff;
   border-bottom-color: #FB8500;
 }
 
@@ -1127,7 +1131,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
 .mn-grid {
   display: grid;
   grid-template-columns: 1fr 0.07vw 1fr;
-  gap: 0 4.17vw;
+  gap: 0 3.33vw;
   align-items: start;
 }
 
@@ -1141,9 +1145,9 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
 
 .mn-col-heading {
   font-family: var(--sans, 'Supreme', sans-serif);
-  font-size: 0.63vw; letter-spacing: 0.22em; text-transform: uppercase;
+  font-size: 0.56vw; letter-spacing: 0.2em; text-transform: uppercase;
   color: var(--text-dim);
-  padding-bottom: 1.67vw;
+  padding-bottom: 1vw;
   border-bottom: 0.07vw solid var(--rule);
   margin-bottom: 0;
 }
@@ -1151,21 +1155,21 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
 .mn-col-items { display: flex; flex-direction: column; }
 
 .mn-item {
-  padding: 1.25vw 0;
+  padding: 0.8vw 0;
   border-bottom: 0.07vw solid var(--rule);
-  transition: background 0.25s;
+  transition: background 0.2s;
 }
-.mn-item:hover { background: rgba(255,255,255,0.015); }
+.mn-item:hover { background: rgba(255,255,255,0.018); }
 
 .mn-item-top {
-  display: flex; align-items: baseline; gap: 0.56vw;
-  margin-bottom: 0.35vw;
+  display: flex; align-items: baseline; gap: 0.42vw;
+  margin-bottom: 0.22vw;
 }
 
 .mn-item-name {
   font-family: var(--sans, 'Supreme', sans-serif);
-  font-size: 1vw; font-weight: 400;
-  color: rgba(255,255,255,0.88);
+  font-size: 0.85vw; font-weight: 400;
+  color: rgba(255,255,255,0.85);
   white-space: nowrap;
 }
 
@@ -1181,17 +1185,17 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
 
 .mn-item-price {
   font-family: var(--sans, 'Supreme', sans-serif);
-  font-size: 0.9vw; font-weight: 300;
-  color: rgba(255,255,255,0.45);
+  font-size: 0.78vw; font-weight: 300;
+  color: rgba(255,255,255,0.4);
   white-space: nowrap;
   flex-shrink: 0;
 }
 
 .mn-item-desc {
   font-family: var(--sans, 'Supreme', sans-serif);
-  font-size: 0.76vw; font-weight: 300;
+  font-size: 0.67vw; font-weight: 300;
   color: var(--text-dim);
-  line-height: 1.6;
+  line-height: 1.5;
   font-style: italic;
 }
 
