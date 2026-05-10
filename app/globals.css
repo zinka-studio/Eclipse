@@ -346,7 +346,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
    CONCEPT
 ═══════════════════════════════════ */
 #concept {
-  min-height: 100vh; display: flex;
+  min-height: 50vh; display: flex;
   align-items: center; justify-content: center;
   background: transparent;
   position: relative;
@@ -361,7 +361,7 @@ body:has(footer *:hover) #cursor-ring { border-color: rgba(0,0,0,0.3); }
 .concept-inner {
   display: flex; flex-direction: column; align-items: center;
   gap: 2.760vw;
-  padding: 7.5vw 26.719vw;
+  padding: 3.75vw 26.719vw;
   text-align: center;
   position: relative;
   z-index: 6;
