@@ -9,6 +9,7 @@ import Concept from '@/components/sections/Concept';
 import Elixir from '@/components/sections/Elixir';
 import SecretCreation from '@/components/sections/SecretCreation';
 import Food from '@/components/sections/Food';
+import Menu from '@/components/sections/Menu';
 import EclipseFooter from '@/components/sections/EclipseFooter';
 
 export default function Home() {
@@ -26,6 +27,7 @@ export default function Home() {
       <Elixir onReserve={openDrawer} />
       <SecretCreation />
       <Food />
+      <Menu />
       <EclipseFooter onReserve={openDrawer} />
       <BookingDrawer open={drawerOpen} onClose={closeDrawer} />
     </>
