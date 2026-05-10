@@ -33,11 +33,12 @@ const DRINKS: Drink[] = [
   },
 ];
 
-const CAPTURE_FPS   = 15;   // frames extracted from each video
-const FORWARD_FPS   = 15;   // playback speed forward
-const BACKWARD_FPS  = 90;   // playback speed backward (6× = very snappy rewind)
-const CROSSFADE_MS  = 220;  // canvas opacity crossfade on drink switch
-const SWITCH_DELAY  = 80;   // ms of rewind to show before swapping canvas
+const CAPTURE_FPS  = 15;   // frames extracted from each video
+const FORWARD_FPS  = 15;   // playback speed forward
+const BACKWARD_FPS = 15;   // playback speed backward (same rate, mirror of forward)
+const HOLD_MS      = 500;  // pause on last frame before reversing
+const CROSSFADE_MS = 220;  // canvas opacity crossfade on drink switch
+const SWITCH_DELAY = 80;   // ms after rewind starts before swapping canvas
 
 type FrameBank = ImageBitmap[];
 
@@ -87,21 +88,23 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
   // which canvas slot is "on top"
   const [activeSlot, setActiveSlot] = useState<'A' | 'B'>('A');
 
-  const [activeIndex,   setActiveIndex]   = useState(0);
-  const [cycleDuration, setCycleDuration] = useState(8000);
-  const [progressKey,   setProgressKey]   = useState(0);
-  const [ready,         setReady]         = useState(false);
+  const [activeIndex,    setActiveIndex]    = useState(0);
+  const [progressKey,    setProgressKey]    = useState(0);
+  const [cycleDuration,  setCycleDuration]  = useState(8000);
+  const [ready,          setReady]          = useState(false);
 
   // refs shared across RAF callbacks (no stale closure issues)
   const framebanksRef   = useRef<(FrameBank | null)[]>([null, null, null]);
   const activeIdxRef    = useRef(0);
   const slotRef         = useRef<'A' | 'B'>('A');
   const frameIdxRef     = useRef(0);          // current frame of active drink
-  const dirRef          = useRef<'fwd' | 'bwd'>('fwd');
+  const dirRef          = useRef<'fwd' | 'hold' | 'bwd'>('fwd');
   const lastTsRef       = useRef(0);
   const rafRef          = useRef(0);
   const transitingRef   = useRef(false);
   const autoTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const holdTimerRef    = useRef<ReturnType<typeof setTimeout> | null>(null);
+  const pendingIdxRef   = useRef<number | null>(null); // target drink from manual click
 
   // ── helpers ────────────────────────────────────────────────────────────────
 
@@ -122,27 +125,53 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
 
   const tick = useCallback((ts: number) => {
     if (lastTsRef.current === 0) lastTsRef.current = ts;
-    const elapsed  = ts - lastTsRef.current;
-    const fps      = dirRef.current === 'fwd' ? FORWARD_FPS : BACKWARD_FPS;
-    const interval = 1000 / fps;
 
-    if (elapsed >= interval) {
-      lastTsRef.current = ts - (elapsed % interval);
+    const dir = dirRef.current;
+    if (dir !== 'hold') {
+      const elapsed  = ts - lastTsRef.current;
+      const fps      = dir === 'fwd' ? FORWARD_FPS : BACKWARD_FPS;
+      const interval = 1000 / fps;
 
-      const bank   = framebanksRef.current[activeIdxRef.current];
-      const total  = bank?.length ?? 1;
-      const slot   = slotRef.current;
+      if (elapsed >= interval) {
+        lastTsRef.current = ts - (elapsed % interval);
 
-      if (dirRef.current === 'fwd') {
-        const next = (frameIdxRef.current + 1) % total;
-        frameIdxRef.current = next;
-        drawFrame(slot, next, activeIdxRef.current);
-      } else {
-        // backward — caller switches direction; we stop at 0
-        const next = Math.max(0, frameIdxRef.current - 1);
-        frameIdxRef.current = next;
-        drawFrame(slot, next, activeIdxRef.current);
-        // signal completion via a tiny sentinel check (handled in transition)
+        const bank  = framebanksRef.current[activeIdxRef.current];
+        const total = bank?.length ?? 1;
+        const slot  = slotRef.current;
+
+        if (dir === 'fwd') {
+          const next = frameIdxRef.current + 1;
+          if (next >= total) {
+            // Reached last frame — hold it, then reverse
+            frameIdxRef.current = total - 1;
+            dirRef.current = 'hold';
+            holdTimerRef.current = setTimeout(() => {
+              dirRef.current   = 'bwd';
+              lastTsRef.current = 0;
+            }, HOLD_MS);
+          } else {
+            frameIdxRef.current = next;
+            drawFrame(slot, next, activeIdxRef.current);
+          }
+        } else {
+          // backward
+          const next = frameIdxRef.current - 1;
+          if (next <= 0) {
+            // Reached first frame — transition to pending (manual) or next auto drink
+            frameIdxRef.current = 0;
+            drawFrame(slot, 0, activeIdxRef.current);
+            if (!transitingRef.current) {
+              const nextIdx = pendingIdxRef.current !== null
+                ? pendingIdxRef.current
+                : (activeIdxRef.current + 1) % DRINKS.length;
+              pendingIdxRef.current = null;
+              doTransition(nextIdx);
+            }
+          } else {
+            frameIdxRef.current = next;
+            drawFrame(slot, next, activeIdxRef.current);
+          }
+        }
       }
     }
 
@@ -151,26 +180,18 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
 
   // ── transition between drinks ───────────────────────────────────────────────
 
-  const startCycle = useCallback((bankLength: number) => {
-    const dur = (bankLength / FORWARD_FPS) * 1000 * 2; // forward + implied backward
-    setCycleDuration(dur);
+  const startCycle = useCallback((frames: number) => {
+    const fwdMs  = (frames / FORWARD_FPS)  * 1000;
+    const bwdMs  = (frames / BACKWARD_FPS) * 1000;
+    setCycleDuration(fwdMs + HOLD_MS + bwdMs);
     setProgressKey(k => k + 1);
   }, []);
-
-  const scheduleNext = useCallback(() => {
-    if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
-    const bank = framebanksRef.current[activeIdxRef.current];
-    const fwdMs = ((bank?.length ?? 1) / FORWARD_FPS) * 1000;
-    autoTimerRef.current = setTimeout(() => {
-      const next = (activeIdxRef.current + 1) % DRINKS.length;
-      doTransition(next);
-    }, fwdMs);
-  }, []); // refs only
 
   const doTransition = useCallback((toIdx: number) => {
     if (transitingRef.current || toIdx === activeIdxRef.current) return;
     transitingRef.current = true;
     if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+    if (holdTimerRef.current)  clearTimeout(holdTimerRef.current);
 
     const currentSlot: 'A' | 'B' = slotRef.current;
     const nextSlot:    'A' | 'B' = currentSlot === 'A' ? 'B' : 'A';
@@ -178,10 +199,6 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
     // Preload next drink's first frame into the inactive canvas
     drawFrame(nextSlot, 0, toIdx);
 
-    // Switch RAF to backward on current canvas
-    dirRef.current = 'bwd';
-
-    // switch canvas almost immediately — rewind continues invisibly on fading-out canvas
     const bwdMs = SWITCH_DELAY;
 
     setTimeout(() => {
@@ -194,14 +211,12 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
 
       setActiveSlot(nextSlot);
       setActiveIndex(toIdx);
-
       const bank = framebanksRef.current[toIdx];
-      if (bank) startCycle(bank.length);
+      startCycle(bank?.length ?? 60);
 
       transitingRef.current = false;
-      scheduleNext();
     }, bwdMs + CROSSFADE_MS);
-  }, [startCycle, scheduleNext]);
+  }, [startCycle]);
 
   // ── mount: extract frames, start loop ──────────────────────────────────────
 
@@ -218,7 +233,6 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
       setReady(true);
       startCycle(first.length);
       rafRef.current = requestAnimationFrame(tick);
-      scheduleNext();
 
       // Extract remaining drinks in background
       for (let i = 1; i < DRINKS.length; i++) {
@@ -231,15 +245,21 @@ export default function Elixir({ onReserve }: { onReserve?: () => void }) {
       cancelled = true;
       cancelAnimationFrame(rafRef.current);
       if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
+      if (holdTimerRef.current)  clearTimeout(holdTimerRef.current);
       // release GPU memory
       framebanksRef.current.forEach(bank => bank?.forEach(b => b.close()));
     };
   }, []); // eslint-disable-line react-hooks/exhaustive-deps
 
   const goTo = (index: number) => {
-    if (transitingRef.current) return;
-    if (autoTimerRef.current) clearTimeout(autoTimerRef.current);
-    doTransition(index);
+    if (transitingRef.current || index === activeIdxRef.current) return;
+    // Cancel any pending timers
+    if (holdTimerRef.current) clearTimeout(holdTimerRef.current);
+    // Store the target; the RAF tick will call doTransition when rewind reaches frame 0
+    pendingIdxRef.current = index;
+    // Switch immediately to reverse from wherever we are
+    dirRef.current    = 'bwd';
+    lastTsRef.current = 0;
   };
 
   // ── render ──────────────────────────────────────────────────────────────────
