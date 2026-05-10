@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef } from 'react';
+import { useParallax } from '@/hooks/useParallax';
 
 const layers = [
   { cls: 'g-l1', label: 'Layer 4 — Finish', name: 'Gold-leaf garnish', swatch: 'linear-gradient(to right,rgba(200,180,100,0.06),rgba(220,200,120,0.12))' },
@@ -10,7 +11,12 @@ const layers = [
 
 export default function Alchemy() {
   const sectionRef = useRef<HTMLElement>(null);
-  const glassRef = useRef<HTMLDivElement>(null);
+  const glassRef   = useRef<HTMLDivElement>(null);
+  const leftRef    = useRef<HTMLDivElement>(null);
+  const rightRef   = useRef<HTMLDivElement>(null);
+
+  useParallax(leftRef,  0.03);
+  useParallax(rightRef, 0.07);
 
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
@@ -35,7 +41,7 @@ export default function Alchemy() {
 
   return (
     <section id="alchemy" ref={sectionRef}>
-      <div className="alc-left">
+      <div ref={leftRef} className="alc-left">
         <div className="sec-tag reveal">
           <span className="sec-tag-num">05</span>
           <span className="sec-tag-line" />
@@ -58,7 +64,7 @@ export default function Alchemy() {
           ))}
         </div>
       </div>
-      <div className="alc-right reveal" data-d="2">
+      <div ref={rightRef} className="alc-right reveal" data-d="2">
         <div className="alc-orbit" />
         <div className="glass" id="cocktail-glass" ref={glassRef}>
           <div className="g-rim" />

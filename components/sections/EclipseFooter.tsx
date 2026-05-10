@@ -1,13 +1,16 @@
 'use client';
 import { useEffect, useRef } from 'react';
-import Image from 'next/image';
+import { useParallax } from '@/hooks/useParallax';
 
 interface FooterProps {
   onReserve: () => void;
 }
 
 export default function EclipseFooter({ onReserve }: FooterProps) {
-  const footerRef = useRef<HTMLElement>(null);
+  const footerRef  = useRef<HTMLElement>(null);
+  const contentRef = useRef<HTMLDivElement>(null);
+
+  useParallax(contentRef, 0.04);
 
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
@@ -20,6 +23,7 @@ export default function EclipseFooter({ onReserve }: FooterProps) {
   return (
     <footer id="footer" ref={footerRef}>
       <div className="ft-arc" aria-hidden="true" />
+      <div ref={contentRef}>
       <div className="ft-pre reveal">Fine Cocktail Bar · Tel Aviv · Est. 2024</div>
       <div className="ft-wordmark reveal" data-d="1">Eclipse</div>
       <div className="ft-info reveal" data-d="2">
@@ -49,9 +53,9 @@ export default function EclipseFooter({ onReserve }: FooterProps) {
         </div>
         <div className="ft-copy">© 2026 Eclipse Bar Ltd. · Tel Aviv · All rights reserved</div>
         <div className="ft-credit">
-          <span className="ft-credit-text">Designed &amp; crafted by</span>
-          <Image src="/zinka-logo.png" alt="Zinka" width={81} height={23} className="ft-credit-logo" />
+          <img src="/media/LOGO.svg" alt="Designed & crafted by Zinka" width={164} height={26} className="ft-credit-logo" />
         </div>
+      </div>
       </div>
     </footer>
   );

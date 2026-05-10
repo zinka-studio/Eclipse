@@ -1,27 +1,28 @@
 'use client';
 import { useState, useRef, useCallback, useEffect } from 'react';
 import { motion, AnimatePresence } from 'motion/react';
+import { useParallax } from '@/hooks/useParallax';
 
 const dishes = [
   {
     name: 'Oyamel Oysters',
     desc: 'White balsamic pearls, mignonette foam',
-    img: '/DISHES/Oyamel Oysters.png',
+    img: '/DISHES/Oyamel Oysters.webp',
   },
   {
     name: 'Wagyu Tataki',
     desc: 'Truffle ponzu, micro-herb garnish',
-    img: '/DISHES/Wagyu Tataki.png',
+    img: '/DISHES/Wagyu Tataki.webp',
   },
   {
     name: 'Black Sesame Tart',
     desc: 'Fermented honey, edible gold dust',
-    img: '/DISHES/Black Sesame Tart.png',
+    img: '/DISHES/Black Sesame Tart.webp',
   },
   {
     name: "Chef's Selection",
     desc: "Tonight's laboratory creation — ask your server",
-    img: "/DISHES/Chef's Selection.png",
+    img: "/DISHES/Chef's Selection.webp",
   },
 ];
 
@@ -30,6 +31,11 @@ export default function Food() {
   const [busy, setBusy] = useState(false);
   const timerRef = useRef<ReturnType<typeof setTimeout> | null>(null);
   const sectionRef = useRef<HTMLElement>(null);
+  const textColRef = useRef<HTMLDivElement>(null);
+  const imgColRef  = useRef<HTMLDivElement>(null);
+
+  useParallax(textColRef, 0.03);
+  useParallax(imgColRef,  0.07);
 
   const go = useCallback(
     (idx: number) => {
@@ -65,7 +71,7 @@ export default function Food() {
   return (
     <section id="food" ref={sectionRef}>
       {/* left column — 671×627px → 34.948×32.656vw, gap 65px → 3.385vw */}
-      <div className="food-inner">
+      <div ref={textColRef} className="food-inner">
 
         {/* top block: headline + body, gap 10px → 0.521vw */}
         <div className="food-top reveal">
@@ -128,7 +134,7 @@ export default function Food() {
       </div>
 
       {/* right image — 640px → 33.333vw, pos left:977px → 50.885vw, top:91px → 4.740vw */}
-      <div className="food-image-wrap">
+      <div ref={imgColRef} className="food-image-wrap">
         <div className="food-ring" />
         {/* mode="sync" — exit + enter run simultaneously so images overlap */}
         <AnimatePresence mode="sync">

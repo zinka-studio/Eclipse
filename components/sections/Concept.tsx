@@ -1,12 +1,16 @@
 'use client';
 import { useEffect, useRef } from 'react';
 import { gsap } from '@/lib/gsap-config';
+import { useParallax } from '@/hooks/useParallax';
 
 export default function Concept() {
   const sectionRef = useRef<HTMLElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const eyebrowRef = useRef<HTMLParagraphElement>(null);
   const accentRef  = useRef<HTMLSpanElement>(null);
+  const innerRef   = useRef<HTMLDivElement>(null);
+
+  useParallax(innerRef, 0.05);
 
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
@@ -65,7 +69,7 @@ export default function Concept() {
   return (
     <section id="concept" ref={sectionRef}>
       <div ref={overlayRef} className="concept-overlay" />
-      <div className="concept-inner">
+      <div ref={innerRef} className="concept-inner">
         <div className="concept-headline-group reveal">
           <p ref={eyebrowRef} className="concept-eyebrow">We don&apos;t just serve drinks.</p>
           <h2 className="concept-headline">

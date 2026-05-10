@@ -1,5 +1,6 @@
 'use client';
 import { useEffect, useRef, useState } from 'react';
+import { useParallax } from '@/hooks/useParallax';
 
 const cocktails = [
   {
@@ -23,6 +24,11 @@ export default function Gallery() {
   const fsRef = useRef<HTMLDivElement>(null);
   const [activeIdx, setActiveIdx] = useState(0);
   const sectionRef = useRef<HTMLElement>(null);
+  const copyRef = useRef<HTMLDivElement>(null);
+  const filmRef = useRef<HTMLDivElement>(null);
+
+  useParallax(copyRef, 0.03);
+  useParallax(filmRef, 0.07);
 
   useEffect(() => {
     const obs = new IntersectionObserver(entries => {
@@ -66,7 +72,7 @@ export default function Gallery() {
 
   return (
     <section id="gallery" ref={sectionRef}>
-      <div className="gallery-head">
+      <div ref={copyRef} className="gallery-head">
         <div className="gallery-copy">
           <div className="gallery-intro reveal">03 — The Liquid Gallery</div>
           <div className="gallery-title reveal" data-d="1">Hand-crafted.<br />Small-batch.</div>
@@ -81,7 +87,7 @@ export default function Gallery() {
           </button>
         </div>
       </div>
-      <div className="filmstrip-wrap">
+      <div ref={filmRef} className="filmstrip-wrap">
         <div className="filmstrip" ref={fsRef}>
           {cocktails.map((c, i) => (
             <div key={i} className="fc reveal" data-d={i > 0 ? String(i) : undefined}>
