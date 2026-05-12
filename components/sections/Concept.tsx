@@ -4,11 +4,11 @@ import { gsap } from '@/lib/gsap-config';
 import { useParallax } from '@/hooks/useParallax';
 
 export default function Concept() {
-  const sectionRef = useRef<HTMLElement>(null);
-  const overlayRef = useRef<HTMLDivElement>(null);
-  const eyebrowRef = useRef<HTMLParagraphElement>(null);
-  const accentRef  = useRef<HTMLSpanElement>(null);
-  const innerRef   = useRef<HTMLDivElement>(null);
+  const sectionRef  = useRef<HTMLElement>(null);
+  const overlayRef  = useRef<HTMLDivElement>(null);
+  const eyebrowRef  = useRef<HTMLParagraphElement>(null);
+  const accentRef   = useRef<HTMLSpanElement>(null);
+  const innerRef    = useRef<HTMLDivElement>(null);
 
   useParallax(innerRef, 0.05);
 
@@ -28,19 +28,22 @@ export default function Concept() {
 
     const tick = () => {
       const overlay = overlayRef.current;
-      const eyebrow = eyebrowRef.current;
       const accent  = accentRef.current;
-      if (!overlay || !eyebrow) return;
+      const section = sectionRef.current;
+      if (!overlay || !section) return;
 
-      const vh        = window.innerHeight;
-      const top       = eyebrow.getBoundingClientRect().top;
-      const fadeStart = vh * 0.8;
-      const fadeEnd   = vh * 0.2;
+      const vh         = window.innerHeight;
+      const eyebrow    = eyebrowRef.current;
+      const eyebrowTop = eyebrow ? eyebrow.getBoundingClientRect().top : Infinity;
 
-      if (top <= fadeEnd) {
+      // Fade hero canvas to black once eyebrow enters bottom 10% of viewport.
+      const fadeStart = vh * 0.9; // eyebrow at bottom 10% → begin fade
+      const fadeEnd   = vh * 0.4; // eyebrow at 40% from top → fully black
+
+      if (eyebrowTop <= fadeEnd) {
         overlay.style.opacity = '1';
-      } else if (top < fadeStart) {
-        overlay.style.opacity = String((fadeStart - top) / (fadeStart - fadeEnd));
+      } else if (eyebrowTop < fadeStart) {
+        overlay.style.opacity = String((fadeStart - eyebrowTop) / (fadeStart - fadeEnd));
       } else {
         overlay.style.opacity = '0';
       }

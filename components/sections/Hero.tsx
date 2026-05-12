@@ -9,9 +9,9 @@ const FADE_OVER = 2.4;        // match useFrameSequence SCROLL_TRAVEL so animati
 const TEXT_ANIM_START = 0.20; // text starts fading at 20% scroll progress
 const TEXT_ANIM_END   = 0.43; // text fully gone at 43% progress
 
-interface HeroProps { onReserve: () => void; }
+interface HeroProps { onReserve: () => void; ready?: boolean; hideLb?: boolean; }
 
-export default function Hero({ onReserve }: HeroProps) {
+export default function Hero({ onReserve, ready = true, hideLb = false }: HeroProps) {
   const [open, setOpen] = useState(false);
   const [scrollHint, setScrollHint] = useState(false);
   const stickyRef = useRef<HTMLDivElement>(null);
@@ -23,10 +23,11 @@ export default function Hero({ onReserve }: HeroProps) {
   const { smoothedProgressRef } = useFrameSequence(canvasRef, stickyRef);
 
   useEffect(() => {
-    const t1 = setTimeout(() => setOpen(true), 300);
-    const t2 = setTimeout(() => setScrollHint(true), 2300);
+    if (!ready) return;
+    const t1 = setTimeout(() => setOpen(true), 120);
+    const t2 = setTimeout(() => setScrollHint(true), 2000);
     return () => { clearTimeout(t1); clearTimeout(t2); };
-  }, []);
+  }, [ready]);
 
   useEffect(() => {
     const tick = () => {
@@ -82,8 +83,8 @@ export default function Hero({ onReserve }: HeroProps) {
           <div className="eclipse-ring" />
           <div className="eclipse-ring" />
         </div>
-        <div className={`lb lb-t${open ? ' open' : ''}`} />
-        <div className={`lb lb-b${open ? ' open' : ''}`} />
+        {!hideLb && <div className={`lb lb-t${open ? ' open' : ''}`} />}
+        {!hideLb && <div className={`lb lb-b${open ? ' open' : ''}`} />}
         <div ref={textRef} className={`hero-inner${open ? ' in' : ''}`}>
           <div className="hero-title">
             <span className="hero-title-upper">Enter the</span>
