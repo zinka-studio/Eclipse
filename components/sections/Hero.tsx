@@ -18,8 +18,9 @@ export default function Hero({ onReserve }: HeroProps) {
   const canvasRef = useRef<HTMLCanvasElement>(null);
   const overlayRef = useRef<HTMLDivElement>(null);
   const textRef = useRef<HTMLDivElement>(null);
+  const scrollHintRef = useRef<HTMLDivElement>(null);
 
-  useFrameSequence(canvasRef, stickyRef);
+  const { smoothedProgressRef } = useFrameSequence(canvasRef, stickyRef);
 
   useEffect(() => {
     const t1 = setTimeout(() => setOpen(true), 300);
@@ -31,18 +32,25 @@ export default function Hero({ onReserve }: HeroProps) {
     const tick = () => {
       const lenis = getLenis();
       const scroll = lenis ? lenis.scroll : window.scrollY;
-      const progress = Math.min(1, scroll / (window.innerHeight * FADE_OVER));
+      const rawProgress = Math.min(1, scroll / (window.innerHeight * FADE_OVER));
+      // Smoothed progress tracks the actual frame position (post-scrub lerp)
+      const progress = smoothedProgressRef.current;
 
-      // Overlay: fades immediately as scrolling starts
+      // Overlay: fades immediately as scrolling starts (use raw scroll for responsiveness)
       if (overlayRef.current) {
-        if (progress > 0) {
-          overlayRef.current.style.opacity = String(Math.max(0, 1 - progress * 2.5));
+        if (rawProgress > 0) {
+          overlayRef.current.style.opacity = String(Math.max(0, 1 - rawProgress * 2.5));
         } else {
           overlayRef.current.style.opacity = '';
         }
       }
 
-      // Text: fades to 0 + scales to 5 between TEXT_ANIM_START and TEXT_ANIM_END
+      // Scroll hint: fades out immediately as scrolling begins
+      if (scrollHintRef.current) {
+        scrollHintRef.current.style.opacity = String(Math.max(0, 1 - rawProgress * 8));
+      }
+
+      // Text: fades to 0 + scales to 5 — tied to smoothed frame progress
       if (textRef.current) {
         if (progress >= TEXT_ANIM_START) {
           const tp = Math.min(1, (progress - TEXT_ANIM_START) / (TEXT_ANIM_END - TEXT_ANIM_START));
@@ -83,19 +91,31 @@ export default function Hero({ onReserve }: HeroProps) {
           </div>
           <div className="hero-post-wrap">
             <div className="hero-tagline">
-              An exclusive encounter between light and shadow.
+              <span className="hero-tagline-line">An exclusive cocktail bar hidden after dark.</span>
+              <span className="hero-tagline-line">Signature drinks that change with every visit.</span>
             </div>
             <div className="hero-actions">
               <button className="btn btn-ghost" onClick={onReserve}>Reserve a Table</button>
+              <button
+                className="btn btn-ghost"
+                onClick={() => {
+                  const el = document.getElementById('menu');
+                  if (!el) return;
+                  const lenis = getLenis();
+                  if (lenis) lenis.scrollTo(el, { offset: 0, duration: 1.6 });
+                  else el.scrollIntoView({ behavior: 'smooth' });
+                }}
+              >Our Menu</button>
             </div>
           </div>
         </div>
         <div className="hero-bottom">
           <div className="hero-addr">42 HaNevi&apos;im St., Tel Aviv</div>
-          <div className={`hero-scroll-hint${scrollHint ? ' in' : ''}`}>
-            <span className="label" style={{ fontSize: '9px', letterSpacing: '0.24em' }}>Scroll</span>
-            <div className="scroll-line" />
-          </div>
+        </div>
+        <div ref={scrollHintRef} className={`hero-scroll-hint${scrollHint ? ' in' : ''}`}>
+          <div className="scroll-hint-line" />
+          <span className="scroll-hint-label">Scroll to experience</span>
+          <div className="scroll-hint-line scroll-hint-line--r" />
         </div>
       </div>
     </section>

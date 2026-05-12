@@ -1,8 +1,9 @@
 'use client';
 import { useRef } from 'react';
 import { motion, useInView, Variants } from 'motion/react';
+import IngredientOrbit from '@/components/ui/IngredientOrbit';
 
-const GLASS_IMAGE = 'https://www.figma.com/api/mcp/asset/44034922-06b8-4d66-af89-674b44fab662';
+const GLASS_IMAGE = '/media/SECRET Elixir BG.webp';
 
 const containerVariants: Variants = {
   hidden: { opacity: 0 },
@@ -56,8 +57,8 @@ export default function SecretCreation() {
               className="sc-img"
               src={GLASS_IMAGE}
               alt=""
-              initial={{ opacity: 0, scale: 1.1 }}
-              animate={isInView ? { opacity: 1, scale: 1 } : { opacity: 0, scale: 1.1 }}
+              initial={{ opacity: 0 }}
+              animate={isInView ? { opacity: 1 } : { opacity: 0 }}
               transition={{ duration: 2, ease: [0.16, 1, 0.3, 1] }}
             />
           </div>
@@ -65,6 +66,9 @@ export default function SecretCreation() {
         {/* Radial vignette to blend edges */}
         <div className="sc-vignette" />
       </div>
+
+      {/* Ingredient orbit rings */}
+      <IngredientOrbit />
 
       {/* Content */}
       <motion.div

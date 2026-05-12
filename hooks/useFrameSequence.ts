@@ -15,6 +15,7 @@ export function useFrameSequence(
   const framesRef = useRef<HTMLImageElement[]>([]);
   const frameIndexRef = useRef(0);
   const targetFrameRef = useRef(0);
+  const smoothedProgressRef = useRef(0);
   const rafRef = useRef<number>(0);
   const needsDrawRef = useRef(false);
 
@@ -38,6 +39,7 @@ export function useFrameSequence(
       const target = targetFrameRef.current;
       current += (target - current) * (1 - Math.pow(1 - SCRUB, 0.15));
       const idx = Math.min(FRAME_COUNT - 1, Math.max(0, Math.round(current)));
+      smoothedProgressRef.current = current / (FRAME_COUNT - 1);
       if (idx !== frameIndexRef.current || needsDrawRef.current) {
         frameIndexRef.current = idx;
         drawFrame(idx);
@@ -90,5 +92,5 @@ export function useFrameSequence(
     return () => gsap.ticker.remove(tickerFn);
   }, []);
 
-  return frameIndexRef;
+  return { frameIndexRef, smoothedProgressRef };
 }
