@@ -19,7 +19,7 @@ export default function Home() {
   const [heroReady, setHeroReady] = useState(false);
   const [menuOpen, setMenuOpen] = useState(false);
   const savedScroll = useRef(0);
-  const closeTimer = useRef<ReturnType<typeof setTimeout>>();
+  const closeTimer = useRef<ReturnType<typeof setTimeout> | undefined>(undefined);
 
   const handleMenuToggle = (open: boolean, scrollTarget?: string) => {
     clearTimeout(closeTimer.current);
