@@ -65,17 +65,36 @@ export function useFrameSequence(
     return () => window.removeEventListener('resize', resize);
   }, [canvasRef]);
 
-  // Preload frames
+  // Progressive frame loading:
+  //   - First EAGER frames load immediately (covers above-fold + first scroll burst)
+  //   - Remaining frames load in background after a short idle delay
   useEffect(() => {
+    const EAGER = 20;
     const images: HTMLImageElement[] = new Array(FRAME_COUNT);
     framesRef.current = images;
-    for (let i = 0; i < FRAME_COUNT; i++) {
+
+    const loadFrame = (i: number) => {
       const img = new Image();
-      const idx = i;
-      img.onload = () => { if (idx === 0) needsDrawRef.current = true; };
+      img.onload = () => { if (i === 0) needsDrawRef.current = true; };
       img.src = `/frames/frame_${String(i + FRAME_START).padStart(4, '0')}.webp`;
       images[i] = img;
-    }
+    };
+
+    // Eagerly load the first batch
+    for (let i = 0; i < EAGER; i++) loadFrame(i);
+
+    // Load the rest in background, yielding every 5 frames so the main thread stays free
+    let timer: ReturnType<typeof setTimeout>;
+    const loadRemaining = async () => {
+      for (let i = EAGER; i < FRAME_COUNT; i++) {
+        loadFrame(i);
+        if ((i - EAGER) % 5 === 4) await new Promise(r => { timer = setTimeout(r, 0); });
+      }
+    };
+
+    // Start background loading after 400 ms — after the eager batch has a head start
+    timer = setTimeout(loadRemaining, 400);
+    return () => clearTimeout(timer);
   }, []);
 
   // GSAP ticker reads Lenis scroll → drives targetFrameRef

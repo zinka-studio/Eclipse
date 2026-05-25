@@ -69,18 +69,35 @@ export function useFooterFrameSequence(
     return () => window.removeEventListener('resize', resize);
   }, [canvasRef]);
 
-  // ── Preload all frames ────────────────────────────────────
+  // ── Deferred frame loading ────────────────────────────────
+  // Footer frames are 16 MB — don't load them until the user is approaching
+  // the footer (within 2 viewport-heights). IntersectionObserver with a large
+  // rootMargin fires the load well before the section is visible.
   useEffect(() => {
+    const section = sectionRef.current;
+    if (!section) return;
+
     const images: HTMLImageElement[] = new Array(FRAME_COUNT);
     framesRef.current = images;
-    for (let i = 0; i < FRAME_COUNT; i++) {
-      const img = new Image();
-      const idx = i;
-      img.onload = () => { if (idx === 0) needsDrawRef.current = true; };
-      img.src = `/frames/footer/frame_${String(i + FRAME_START).padStart(4, '0')}.webp`;
-      images[i] = img;
-    }
-  }, []);
+
+    const startLoading = () => {
+      for (let i = 0; i < FRAME_COUNT; i++) {
+        const img = new Image();
+        const idx = i;
+        img.onload = () => { if (idx === 0) needsDrawRef.current = true; };
+        img.src = `/frames/footer/frame_${String(i + FRAME_START).padStart(4, '0')}.webp`;
+        images[i] = img;
+      }
+    };
+
+    // Fire when footer is within 2 full screen-heights of entering the viewport
+    const observer = new IntersectionObserver(
+      ([entry]) => { if (entry.isIntersecting) { startLoading(); observer.disconnect(); } },
+      { rootMargin: '200% 0px' },
+    );
+    observer.observe(section);
+    return () => observer.disconnect();
+  }, [sectionRef]);
 
   // ── GSAP ticker: two-phase scroll → frame + overlays ─────
   useEffect(() => {

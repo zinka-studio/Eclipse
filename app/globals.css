@@ -668,9 +668,10 @@ body:has(.zinka-link:hover) #cursor-dot { transform: scale(0); opacity: 0; }
   z-index: 10;
 }
 
+/* Height and stickiness are managed by GSAP ScrollTrigger pin — do not set here */
 .elixir-sticky {
   position: relative;
-  height: 56.25vw; /* 16:9 — scales with viewport width */
+  height: 100vh;
   width: 100%;
   overflow: hidden;
 }
@@ -751,25 +752,6 @@ body:has(.zinka-link:hover) #cursor-dot { transform: scale(0); opacity: 0; }
   margin-bottom: 0;
 }
 
-.elixir-progress-track {
-  width: 100%;
-  height: 0.07vw;
-  background: rgba(244,196,133,0.15);
-  margin-top: 0.69vw;
-  overflow: hidden;
-}
-
-.elixir-progress-fill {
-  height: 100%;
-  width: 0%;
-  background: #F4C485;
-  animation: elixir-fill linear forwards;
-}
-
-@keyframes elixir-fill {
-  from { width: 0%; }
-  to   { width: 100%; }
-}
 
 /* Center column — empty, video shows through */
 .elixir-center {
@@ -1660,7 +1642,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
 
   /* ── ELIXIR ── */
   #elixir                { border-top: 1px solid var(--rule); }
-  .elixir-sticky         { height: auto; min-height: 100svh; }
+  .elixir-sticky         { height: 100svh; min-height: unset; }
   .elixir-video          { object-fit: cover; object-position: center; }
   .elixir-content-grid   {
     grid-template-columns: 1fr;
@@ -1673,8 +1655,7 @@ body:has(section#food *:hover) #cursor-ring { border-color: rgba(255,255,255,0.3
   .elixir-left           { align-items: center; gap: 6px; }
   .elixir-kicker         { font-size: 14px; text-align: center; }
   .elixir-main-title     { font-size: 40px; text-align: center; }
-  .elixir-progress-track { margin-top: 6px; height: 1px; }
-  .elixir-right          { padding-right: 0; }
+.elixir-right          { padding-right: 0; }
   .elixir-drink-list     { gap: 8px; }
   .elixir-drink-name     { font-size: 24px; line-height: 1.3; }
   .elixir-drink-desc     { font-size: 13px; max-width: 100%; }
